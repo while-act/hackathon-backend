@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	swaggerFiles "github.com/swaggo/files"
@@ -8,6 +9,7 @@ import (
 	"github.com/while-act/hackathon-backend/internal/controller/dao"
 	"github.com/while-act/hackathon-backend/pkg/middleware/bind"
 	"github.com/while-act/hackathon-backend/pkg/middleware/session"
+	"net/http"
 )
 
 type ErrHandler interface {
@@ -38,7 +40,12 @@ func NewSetter(r *gin.Engine, valid *validator.Validate, erh ErrHandler, qh Quer
 }
 
 func (h *Handler) InitRoutes(s *Setter) {
-	s.r.Use(s.cors, s.qh.HandleQueries(), gin.Recovery())
+	s.r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:3000", "http://localhost:80", "http://localhost:5173", "http://localhost"},
+		AllowMethods:     []string{http.MethodPost, http.MethodDelete, http.MethodOptions, http.MethodPatch, http.MethodGet},
+		AllowHeaders:     []string{"Content-Type", "User-Agent", "Accept-Language", "Accept", "Cache-Control", "Content-Length", "DomainName", "Accept-Encoding", "Connection", "Set-Cookie", "Cookie"},
+		AllowCredentials: true,
+	}), s.qh.HandleQueries(), gin.Recovery())
 	rg := s.r.Group(s.mainPath)
 
 	calc := rg.Group("/calc")
@@ -90,7 +97,9 @@ func (h *Handler) InitRoutes(s *Setter) {
 func (s *Setter) cors(c *gin.Context) {
 	if origin := c.GetHeader("Origin"); origin != "" {
 		c.Header("Access-Control-Allow-Origin", "http://localhost:3000")
-		c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		c.Header("Access-Control-Allow-Origin", "http://localhost:5173")
+		c.Header("Access-Control-Allow-Origin", "http://localhost:80")
+		c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PATCH, DELETE")
 		c.Header("Access-Control-Allow-Headers", "Content-Type, User-Agent, Accept-Language, Accept, Cache-Control, Content-Length, DomainName, Accept-Encoding, Connection, Set-Cookie, Cookie")
 		c.Header("Access-Control-Expose-Headers", "Authorization")
 		c.Header("Access-Control-Allow-Credentials", "true")
