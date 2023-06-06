@@ -18,7 +18,7 @@ type Config struct {
 
 	Session struct {
 		CookieName string        `yaml:"cookie_name" env:"COOKIE_NAME" env-default:"session_id"`
-		CookiePath string        `yaml:"cookie_path" env:"COOKIE_PATH" env-default:"/api"`
+		CookiePath string        `yaml:"cookie_path" env:"COOKIE_PATH" env-default:"hackathon.frkam.dev/api"`
 		Duration   time.Duration `yaml:"duration" env:"COOKIE_DURATION" env-default:"720h"`
 	} `yaml:"session"`
 
