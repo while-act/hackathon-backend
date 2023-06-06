@@ -17,7 +17,7 @@ func (a Auth) Session(handler func(*gin.Context, *dao.Session) error) func(c *gi
 		}
 
 		if ok {
-			c.SetSameSite(http.SameSiteLaxMode)
+			c.SetSameSite(http.SameSiteNoneMode)
 			c.SetCookie(a.cfg.Session.CookieName, session, int(a.cfg.Session.Duration.Seconds()),
 				a.cfg.Session.CookiePath, a.cfg.Listen.DomainName, true, true)
 		}
@@ -34,7 +34,7 @@ func (a Auth) SessionFunc(c *gin.Context) (*dao.Session, error) {
 	}
 
 	if ok {
-		c.SetSameSite(http.SameSiteLaxMode)
+		c.SetSameSite(http.SameSiteNoneMode)
 		c.SetCookie(a.cfg.Session.CookieName, session, int(a.cfg.Session.Duration.Seconds()),
 			a.cfg.Session.CookiePath, a.cfg.Listen.DomainName, true, true)
 	}

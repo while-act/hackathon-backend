@@ -96,7 +96,7 @@ func (a Auth) SetNewCookie(id int, c *gin.Context) {
 		return
 	}
 
-	c.SetSameSite(http.SameSiteLaxMode)
+	c.SetSameSite(http.SameSiteNoneMode)
 	c.SetCookie(a.cfg.Session.CookieName, session, int(a.cfg.Session.Duration.Seconds()),
 		a.cfg.Session.CookiePath, a.cfg.Listen.DomainName, true, true)
 }
