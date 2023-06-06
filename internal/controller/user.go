@@ -3,9 +3,8 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/while-act/hackathon-backend/internal/controller/dao"
 	"github.com/while-act/hackathon-backend/internal/controller/dto"
-	"github.com/while-act/hackathon-backend/internal/service"
-	"github.com/while-act/hackathon-backend/pkg/bind"
 	"github.com/while-act/hackathon-backend/pkg/middleware/errs"
 	"net/http"
 	"strconv"
@@ -21,19 +20,15 @@ import (
 // @Failure 401 {object} errs.MyError "User isn't logged in"
 // @Failure 500 {object} errs.MyError
 // @Router /auth/session [get]
-func (h *Handler) getMe(c *gin.Context) {
-	s := h.session.GetSession(c)
-	if s == nil {
-		return
-	}
+func (h *Handler) getMe(c *gin.Context, info *dao.Session) error {
 
-	user, err := h.user.FindUserByID(s.ID)
+	user, err := h.user.FindUserByID(info.ID)
 	if err != nil {
-		c.Error(err)
-		return
+		return err
 	}
 
 	c.JSON(http.StatusOK, user)
+	return nil
 }
 
 // UpdateMe godoc
@@ -47,23 +42,14 @@ func (h *Handler) getMe(c *gin.Context) {
 // @Failure 401 {object} errs.MyError "User isn't logged in"
 // @Failure 500 {object} errs.MyError
 // @Router /user [patch]
-func (h *Handler) updateMe(c *gin.Context) {
-	s := h.session.GetSession(c)
-	if s == nil {
-		return
-	}
+func (h *Handler) updateMe(c *gin.Context, updFields dto.UpdateUser, info *dao.Session) error {
 
-	updFields := bind.FillStructJSON[dto.UpdateUser](c)
-	if updFields == nil {
-		return
-	}
-
-	if err := h.user.UpdateUser(updFields, s.ID); err != nil {
-		c.Error(err)
-		return
+	if err := h.user.UpdateUser(&updFields, info.ID); err != nil {
+		return err
 	}
 
 	c.Status(http.StatusOK)
+	return nil
 }
 
 // UpdatePassword godoc
@@ -75,26 +61,20 @@ func (h *Handler) updateMe(c *gin.Context) {
 // @Failure 400 {object} errs.MyError "Validation error"
 // @Failure 500 {object} errs.MyError
 // @Router /user/password [patch]
-func (h *Handler) updatePassword(c *gin.Context) {
-	updPassword := bind.FillStructJSON[dto.UpdatePassword](c)
-	if updPassword == nil {
-		return
-	}
+func (h *Handler) updatePassword(c *gin.Context, updPassword dto.UpdatePassword) error {
 
 	if ok, err := h.auth.EqualsPopCode(updPassword.Email, updPassword.Code); err != nil {
-		c.Error(errs.ServerError.AddErr(err))
-		return
+		return err
 	} else if !ok {
-		c.Error(errs.CodeError.AddErr(err))
-		return
+		return errs.CodeError.AddErr(err)
 	}
 
 	if err := h.user.UpdatePassword([]byte(updPassword.NewPassword), updPassword.Email); err != nil {
-		c.Error(err)
-		return
+		return err
 	}
 
 	c.Status(http.StatusOK)
+	return nil
 }
 
 // UpdateEmail godoc
@@ -108,23 +88,14 @@ func (h *Handler) updatePassword(c *gin.Context) {
 // @Failure 401 {object} errs.MyError "User isn't logged in"
 // @Failure 500 {object} errs.MyError
 // @Router /user/email [patch]
-func (h *Handler) updateEmail(c *gin.Context) {
-	s := h.session.GetSession(c)
-	if s == nil {
-		return
-	}
+func (h *Handler) updateEmail(c *gin.Context, updEmail dto.UpdateEmail, info *dao.Session) error {
 
-	updEmail := bind.FillStructJSON[dto.UpdateEmail](c)
-	if updEmail == nil {
-		return
-	}
-
-	if err := h.user.UpdateEmail([]byte(updEmail.Password), updEmail.NewEmail, s.ID); err != nil {
-		c.Error(err)
-		return
+	if err := h.user.UpdateEmail([]byte(updEmail.Password), updEmail.NewEmail, info.ID); err != nil {
+		return err
 	}
 
 	c.Status(http.StatusOK)
+	return nil
 }
 
 // GetHistories godoc
@@ -136,18 +107,14 @@ func (h *Handler) updateEmail(c *gin.Context) {
 // @Failure 401 {object} errs.MyError "User isn't logged in"
 // @Failure 500 {object} errs.MyError
 // @Router /user [get]
-func (h *Handler) getHistories(c *gin.Context) {
-	s := h.session.GetSession(c)
-	if s == nil {
-		return
-	}
+func (h *Handler) getHistories(c *gin.Context, info *dao.Session) error {
 
-	history, err := h.user.GetAllHistory(s.ID)
+	history, err := h.user.GetAllHistory(info.ID)
 	if err != nil {
-		c.Error(err)
-		return
+		return err
 	}
 	c.JSON(http.StatusOK, history)
+	return nil
 }
 
 // GetHistory godoc
@@ -161,53 +128,39 @@ func (h *Handler) getHistories(c *gin.Context) {
 // @Failure 401 {object} errs.MyError "User isn't logged in"
 // @Failure 500 {object} errs.MyError
 // @Router /user/{history_id} [get]
-func (h *Handler) getHistory(c *gin.Context) {
-	s := h.session.GetSession(c)
-	if s == nil {
-		return
-	}
+func (h *Handler) getHistory(c *gin.Context, info *dao.Session) error {
 
 	historyIdStr := c.Param("history_id")
 
 	err := binding.Validator.ValidateStruct(dto.HistoryId{Id: historyIdStr})
 	if err != nil {
-		c.Error(err)
-		return
+		return err
 	}
 	historyId, _ := strconv.Atoi(historyIdStr)
 
-	history, err := h.user.GetOneHistory(historyId, s.ID)
+	history, err := h.user.GetOneHistory(historyId, info.ID)
 	if err != nil {
-		c.Error(err)
-		return
+		return err
+	}
+	dist, err := h.district.GetDistrict(history.DistrictTitle)
+	if err != nil {
+		return err
+	}
+	var tax float64
+	if history.AccountingSupport {
+		tax, err = h.tax.GetTax(&history.TaxationSystemOperations, &history.OperationType)
+		if err != nil {
+			return err
+		}
 	}
 
-	p := service.Params{
-		IndustryBranch:      history.IndustryBranch,
-		OrganizationType:    history.OrganizationalLegal,
-		FullTimeEmployers:   history.FullTimeEmployees,
-		LandArea:            history.LandArea,
-		Total:               0,
-		Staff:               0,
-		RentalProperty:      0,
-		Taxes:               0,
-		Services:            0,
-		StaffNum:            0,
-		MinStaffMaintenance: 0,
-		MaxStaffMaintenance: 0,
-		MinPensionInsurance: 0,
-		MaxPensionInsurance: 0,
-		MinHealthInsurance:  0,
-		MaxHealthInsurance:  0,
-	}
-
-	err = h.pdf.GeneratePDF(c.Writer, p)
+	err = h.pdf.GeneratePDF(c.Writer, h.pdf.CalcDB(history, dist, tax))
 	if err != nil {
-		c.Error(errs.PDFError.AddErr(err))
-		return
+		return errs.PDFError.AddErr(err)
 	}
 
 	c.Header("Content-Disposition", "attachment; filename=result.pdf")
 	c.Header("Content-Type", "application/pdf")
 	c.Status(http.StatusOK)
+	return nil
 }

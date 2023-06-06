@@ -29,14 +29,14 @@ func (h *HistoryStorage) CreateHistory(ctx context.Context, data *dto.History, b
 		SetLandArea(data.LandArea).
 		SetIsBuy(data.IsBuy).
 		SetConstructionFacilitiesArea(data.ConstructionFacilitiesArea).
-		SetBuildingType(data.BuildingType).
+		SetBuildingType(data.BuildingTypes).
 		SetEquipment(data.Equipment).
 		SetAccountingSupport(data.AccountingSupport).
 		SetNillableTaxationSystemOperations(data.TaxationSystemOperations).
 		SetNillableOperationType(data.OperationsType).
 		SetPatentCalc(data.PatentCalc).
 		SetNillableBusinessActivityID(busactId).
-		SetNillableOther(data.Other).
+		SetOther(data.Other).
 		SetUserID(userId).Exec(ctx)
 
 }

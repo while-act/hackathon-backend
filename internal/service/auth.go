@@ -11,6 +11,7 @@ type AuthPostgres interface {
 	IDExist(ctx context.Context, id int) (bool, error)
 	CreateUserWithPassword(ctx context.Context, auth *dto.SignUp, company *ent.Company) (*ent.User, error)
 	AuthUserByEmail(ctx context.Context, email string) (*ent.User, error)
+	AddSession(ctx context.Context, id int, sessions ...string) error
 }
 
 type AuthService struct {
@@ -35,6 +36,10 @@ func (a *AuthService) CreateUserWithPassword(auth *dto.SignUp, company *ent.Comp
 // AuthUserByEmail returns the user's password hash and username with given email (only on jwts)
 func (a *AuthService) AuthUserByEmail(email string) (*ent.User, error) {
 	return a.postgres.AuthUserByEmail(context.Background(), email)
+}
+
+func (a *AuthService) AddSession(id int, sessions ...string) error {
+	return a.postgres.AddSession(context.Background(), id, sessions...)
 }
 
 type AuthRedis interface {

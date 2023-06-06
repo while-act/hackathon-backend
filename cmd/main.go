@@ -4,24 +4,22 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
-	"github.com/go-playground/validator/v10"
 	"github.com/redis/go-redis/v9"
-	"github.com/sirupsen/logrus"
-	"github.com/while-act/hackathon-backend/docs"
+	_ "github.com/while-act/hackathon-backend/docs"
 	"github.com/while-act/hackathon-backend/ent"
 	"github.com/while-act/hackathon-backend/internal/controller"
 	"github.com/while-act/hackathon-backend/internal/repo/postgres"
 	redisRepo "github.com/while-act/hackathon-backend/internal/repo/redis"
 	"github.com/while-act/hackathon-backend/internal/service"
-	"github.com/while-act/hackathon-backend/pkg/bind"
 	"github.com/while-act/hackathon-backend/pkg/client/email"
 	"github.com/while-act/hackathon-backend/pkg/client/postgresql"
 	redisInit "github.com/while-act/hackathon-backend/pkg/client/redis"
 	"github.com/while-act/hackathon-backend/pkg/conf"
+	"github.com/while-act/hackathon-backend/pkg/log"
+	"github.com/while-act/hackathon-backend/pkg/middleware/bind"
 	"github.com/while-act/hackathon-backend/pkg/middleware/errs"
-	"github.com/while-act/hackathon-backend/pkg/middleware/logger"
-	"github.com/while-act/hackathon-backend/pkg/middleware/sessions"
+	"github.com/while-act/hackathon-backend/pkg/middleware/query"
+	"github.com/while-act/hackathon-backend/pkg/middleware/session"
 	"net/http"
 	"net/smtp"
 	"os"
@@ -29,21 +27,6 @@ import (
 	"syscall"
 	"time"
 )
-
-func init() {
-	logrus.SetFormatter(&logrus.JSONFormatter{
-		TimestampFormat: "2006/01/02 15:32:05",
-		FieldMap: logrus.FieldMap{
-			logrus.FieldKeyLevel: "status",
-			logrus.FieldKeyFunc:  "caller",
-			logrus.FieldKeyMsg:   "message",
-		},
-	})
-	logrus.SetReportCaller(true)
-
-	// global validator of incoming values
-	binding.Validator = bind.NewValid(validator.New())
-}
 
 // @title While.act API
 // @version 1.0
@@ -65,17 +48,13 @@ func init() {
 // @sessions.docs.description Authorization, registration and authentication
 func main() {
 	cfg := conf.GetConfig()
-	docs.SwaggerInfo.Host = fmt.Sprintf("%s:%d", cfg.Listen.DomainName, cfg.Listen.Port)
 
 	pClient, rClient, mailClient := getClients(cfg)
 
-	h := initHandler(pClient, rClient, mailClient, cfg.TemplatePath)
-	m := initMiddlewares()
-
+	h := initHandler(pClient, rClient, mailClient, cfg)
 	r := gin.New()
 
-	m.InitGlobalMiddleWares(r)
-	h.InitRoutes(r.Group(cfg.Listen.MainPath), mailClient != nil)
+	h.InitRoutes(createSetter(r, pClient, rClient, cfg, mailClient != nil))
 
 	run(cfg.Listen.Port, r, pClient, rClient, mailClient)
 }
@@ -95,35 +74,34 @@ func run(port int, r *gin.Engine, pClient *ent.Client, rClient *redis.Client, ma
 
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			logrus.WithError(err).Fatalf("error occurred while running http server")
+			log.WithErr(err).Fatalf("error occurred while running http server")
 		}
 	}()
-	logrus.Infof("Server Started On Port %d", port)
+	log.Infof("Server Started On Port %d", port)
 
 	<-quit
 
-	logrus.Info("Server Shutting Down ...")
+	log.Info("Server Shutting Down ...")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	if err := srv.Shutdown(ctx); err != nil {
-		logrus.WithError(err).Fatal("Server Shutdown Failed")
+		log.WithErr(err).Fatal("Server Shutdown Failed")
 	}
 
 	if err := rClient.Close(); err != nil {
-		logrus.WithError(err).Fatal("Redis Connection Shutdown Failed")
+		log.WithErr(err).Fatal("Redis Connection Shutdown Failed")
 	}
 
 	if err := pClient.Close(); err != nil {
-		logrus.WithError(err).Fatal("PostgreSQL Connection Shutdown Failed")
+		log.WithErr(err).Fatal("PostgreSQL Connection Shutdown Failed")
 	}
 
+	log.Info("Server Exited Properly")
 	if err := mailClient.Quit(); err != nil {
-		logrus.WithError(err).Fatal("Email Connection Shutdown Failed")
+		log.WithErr(err).Fatal("Email Connection Shutdown Failed")
 	}
-
-	logrus.Info("Server Exited Properly")
 }
 
 func getClients(cfg *conf.Config) (*ent.Client, *redis.Client, *smtp.Client) {
@@ -137,7 +115,7 @@ func getClients(cfg *conf.Config) (*ent.Client, *redis.Client, *smtp.Client) {
 	return pClient, rClient, mailClient
 }
 
-func initHandler(pClient *ent.Client, rClient *redis.Client, mailClient *smtp.Client, tPath string) *controller.Handler {
+func initHandler(pClient *ent.Client, rClient *redis.Client, mailClient *smtp.Client, cfg *conf.Config) *controller.Handler {
 	pUser := postgres.NewUserStorage(pClient.User)
 	pComp := postgres.NewCompanyStorage(pClient.Company)
 	pHist := postgres.NewHistoryStorage(pClient.History)
@@ -154,7 +132,7 @@ func initHandler(pClient *ent.Client, rClient *redis.Client, mailClient *smtp.Cl
 	taxationSystem := service.NewTaxService(pTax)
 	business := service.NewBusinessService(pBus)
 	user := service.NewUserService(pUser, rConn)
-	pdf := service.NewPDF(tPath)
+	pdf := service.NewPDF(cfg.TemplatePath)
 	mail := service.NewEmailSender(mailClient)
 	company := service.NewCompanyService(pComp)
 
@@ -168,14 +146,24 @@ func initHandler(pClient *ent.Client, rClient *redis.Client, mailClient *smtp.Cl
 		taxationSystem,
 		business,
 		pdf,
-		sessions.NewAuth(auth),
+		session.NewAuth(auth, cfg),
 		mail,
 	)
 }
 
-func initMiddlewares() *controller.Middlewares {
-	return controller.NewMiddleWares(
-		errs.NewErrHandler(logrus.New()),
-		logger.NewQueryHandler(logrus.New()),
+func createSetter(r *gin.Engine, pClient *ent.Client, rClient *redis.Client, cfg *conf.Config, mailSet bool) *controller.Setter {
+	pUser := postgres.NewUserStorage(pClient.User)
+	rConn := redisRepo.NewRClient(rClient)
+
+	auth := service.NewAuthService(pUser, rConn)
+
+	return controller.NewSetter(
+		r,
+		bind.NewValidator(),
+		errs.NewErrHandler(),
+		query.NewQueryHandler(),
+		session.NewAuth(auth, cfg),
+		cfg.Listen.MainPath,
+		mailSet,
 	)
 }

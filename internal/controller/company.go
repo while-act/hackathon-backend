@@ -2,8 +2,8 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/while-act/hackathon-backend/internal/controller/dao"
 	"github.com/while-act/hackathon-backend/internal/controller/dto"
-	"github.com/while-act/hackathon-backend/pkg/bind"
 	"net/http"
 )
 
@@ -16,25 +16,19 @@ import (
 // @Failure 401 {object} errs.MyError "User isn't logged in"
 // @Failure 500 {object} errs.MyError
 // @Router /company [get]
-func (h *Handler) getMyCompany(c *gin.Context) {
-	s := h.session.GetSession(c)
-	if s == nil {
-		return
-	}
-
-	user, err := h.user.FindUserByID(s.ID)
+func (h *Handler) getMyCompany(c *gin.Context, info *dao.Session) error {
+	user, err := h.user.FindUserByID(info.ID)
 	if err != nil {
-		c.Error(err)
-		return
+		return err
 	}
 
 	company, err := h.company.GetCompanyDTO(user.CompanyID)
 	if err != nil {
-		c.Error(err)
-		return
+		return err
 	}
 
 	c.JSON(http.StatusOK, company)
+	return nil
 }
 
 // UpdateCompany godoc
@@ -48,27 +42,16 @@ func (h *Handler) getMyCompany(c *gin.Context) {
 // @Failure 401 {object} errs.MyError "User isn't logged in"
 // @Failure 500 {object} errs.MyError
 // @Router /company [patch]
-func (h *Handler) updateCompany(c *gin.Context) {
-	s := h.session.GetSession(c)
-	if s == nil {
-		return
-	}
-
-	updCompany := bind.FillStructJSON[dto.UpdateCompany](c)
-	if updCompany == nil {
-		return
-	}
-
-	user, err := h.user.FindUserByID(s.ID)
+func (h *Handler) updateCompany(c *gin.Context, updCompany dto.UpdateCompany, info *dao.Session) error {
+	user, err := h.user.FindUserByID(info.ID)
 	if err != nil {
-		c.Error(err)
-		return
+		return err
 	}
 
-	if err = h.company.UpdateCompany(updCompany, user.CompanyID); err != nil {
-		c.Error(err)
-		return
+	if err = h.company.UpdateCompany(&updCompany, user.CompanyID); err != nil {
+		return err
 	}
 
 	c.Status(http.StatusOK)
+	return nil
 }

@@ -3,7 +3,8 @@ package conf
 import (
 	"github.com/ilyakaznacheev/cleanenv"
 	"github.com/joho/godotenv"
-	"github.com/sirupsen/logrus"
+	"github.com/while-act/hackathon-backend/pkg/log"
+	"os"
 	"sync"
 	"time"
 )
@@ -71,19 +72,18 @@ func GetConfig() *Config {
 		godotenv.Load()
 
 		if err := cleanenv.ReadConfig("configs/config.yml", &inst); err != nil {
-			logrus.WithError(err).Error("error occurred while reading config file")
+			log.WithErr(err).Err("error occurred while reading config file")
 			help, _ := cleanenv.GetDescription(&inst, nil)
-			logrus.Info(&help)
-			logrus.Exit(0)
+			log.Info(&help)
+			os.Exit(0)
 		}
 
 		if inst.Prod == 1 {
 			inst.DB.Postgres.Host = "postgres"
 			inst.DB.Redis.Host = "redis"
-			//gin.SetMode(gin.ReleaseMode)
 
 		} else {
-			logrus.SetLevel(logrus.DebugLevel)
+			log.SetLevel(log.DebugLevel)
 		}
 	})
 

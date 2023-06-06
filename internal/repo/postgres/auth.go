@@ -30,3 +30,7 @@ func (r *UserStorage) AuthUserByEmail(ctx context.Context, email string) (*ent.U
 		user.Email(email),
 	).Only(ctx)
 }
+
+func (r *UserStorage) AddSession(ctx context.Context, id int, sessions ...string) error {
+	return r.userClient.Update().AppendSessions(sessions).Where(user.ID(id)).Exec(ctx)
+}
