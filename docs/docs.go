@@ -724,7 +724,6 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "avgSalary",
-                "buildingTypes",
                 "constructionFacilitiesArea",
                 "districtTitle",
                 "fullTimeEmployees",

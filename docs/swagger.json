@@ -719,7 +719,6 @@
             "type": "object",
             "required": [
                 "avgSalary",
-                "buildingTypes",
                 "constructionFacilitiesArea",
                 "districtTitle",
                 "fullTimeEmployees",

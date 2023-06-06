@@ -184,7 +184,6 @@ definitions:
         type: integer
     required:
     - avgSalary
-    - buildingTypes
     - constructionFacilitiesArea
     - districtTitle
     - fullTimeEmployees
