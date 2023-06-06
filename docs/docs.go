@@ -47,21 +47,15 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Validation error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "401": {
                         "description": "User isn't logged in",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "500": {
                         "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     }
                 }
             },
@@ -80,9 +74,7 @@ const docTemplate = `{
                     },
                     "500": {
                         "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     }
                 }
             }
@@ -114,15 +106,11 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Data is not valid",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "500": {
                         "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     }
                 }
             }
@@ -154,15 +142,11 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Data is not valid",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "500": {
                         "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     }
                 }
             }
@@ -191,15 +175,11 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Validation error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "500": {
                         "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     }
                 }
             }
@@ -233,21 +213,15 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Validation error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "401": {
                         "description": "User isn't logged in",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "500": {
                         "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     }
                 }
             }
@@ -277,15 +251,11 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Validation error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "500": {
                         "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     }
                 }
             }
@@ -311,15 +281,11 @@ const docTemplate = `{
                     },
                     "401": {
                         "description": "User isn't logged in",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "500": {
                         "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     }
                 }
             },
@@ -351,21 +317,15 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Validation error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "401": {
                         "description": "User isn't logged in",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "500": {
                         "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     }
                 }
             }
@@ -397,15 +357,11 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Data is not valid",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "500": {
                         "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     }
                 }
             }
@@ -434,15 +390,11 @@ const docTemplate = `{
                     },
                     "401": {
                         "description": "User isn't logged in",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "500": {
                         "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     }
                 }
             },
@@ -474,21 +426,15 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Validation error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "401": {
                         "description": "User isn't logged in",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "500": {
                         "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     }
                 }
             }
@@ -522,21 +468,15 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Validation error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "401": {
                         "description": "User isn't logged in",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "500": {
                         "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     }
                 }
             }
@@ -565,15 +505,11 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Validation error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "500": {
                         "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     }
                 }
             }
@@ -605,21 +541,15 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Validation error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "401": {
                         "description": "User isn't logged in",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     },
                     "500": {
                         "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/errs.MyError"
-                        }
+                        "schema": {}
                     }
                 }
             }
@@ -651,17 +581,17 @@ const docTemplate = `{
         "dao.Histories": {
             "type": "object",
             "required": [
-                "companyName",
-                "id"
+                "id",
+                "name"
             ],
             "properties": {
-                "companyName": {
-                    "type": "string",
-                    "example": "ООО 'Парк'"
-                },
                 "id": {
                     "type": "integer",
                     "example": 12
+                },
+                "name": {
+                    "type": "string",
+                    "example": "ООО 'Парк'"
                 }
             }
         },
@@ -744,27 +674,16 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.BusinessActivityId": {
+        "dto.BusinessActivity": {
             "type": "object",
             "required": [
-                "id",
                 "subType",
-                "total",
                 "type"
             ],
             "properties": {
-                "id": {
-                    "type": "integer",
-                    "maximum": 0,
-                    "example": 12
-                },
                 "subType": {
                     "type": "string",
                     "example": "Много букав"
-                },
-                "total": {
-                    "type": "number",
-                    "example": 35.235
                 },
                 "type": {
                     "type": "string",
@@ -792,7 +711,7 @@ const docTemplate = `{
             "properties": {
                 "price": {
                     "type": "number",
-                    "maximum": 0,
+                    "minimum": 0,
                     "example": 3058.12
                 },
                 "type": {
@@ -804,18 +723,15 @@ const docTemplate = `{
         "dto.History": {
             "type": "object",
             "required": [
-                "accountingSupport",
                 "avgSalary",
-                "buildingType",
+                "buildingTypes",
                 "constructionFacilitiesArea",
                 "districtTitle",
                 "fullTimeEmployees",
                 "industryBranch",
-                "isBuy",
                 "landArea",
                 "name",
-                "organizationLegal",
-                "patentCalc"
+                "organizationLegal"
             ],
             "properties": {
                 "accountingSupport": {
@@ -824,24 +740,29 @@ const docTemplate = `{
                 },
                 "avgSalary": {
                     "type": "number",
-                    "maximum": 0,
+                    "minimum": 0,
                     "example": 3058.12
                 },
-                "buildingType": {
-                    "type": "string",
-                    "example": "Энергетическое"
+                "buildingTypes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "Энергетические"
+                    ]
                 },
                 "business_activity": {
-                    "$ref": "#/definitions/dto.BusinessActivityId"
+                    "$ref": "#/definitions/dto.BusinessActivity"
                 },
                 "constructionFacilitiesArea": {
                     "type": "number",
-                    "maximum": 0,
+                    "minimum": 0,
                     "example": 50
                 },
                 "districtTitle": {
                     "type": "string",
-                    "example": "ВАО"
+                    "example": "ЗАО"
                 },
                 "equipment": {
                     "type": "array",
@@ -851,7 +772,7 @@ const docTemplate = `{
                 },
                 "fullTimeEmployees": {
                     "type": "integer",
-                    "maximum": 0,
+                    "minimum": 0,
                     "example": 50
                 },
                 "industryBranch": {
@@ -864,7 +785,7 @@ const docTemplate = `{
                 },
                 "landArea": {
                     "type": "number",
-                    "maximum": 0,
+                    "minimum": 0,
                     "example": 120
                 },
                 "name": {
@@ -873,9 +794,9 @@ const docTemplate = `{
                     "minLength": 2,
                     "example": "ООО 'Парк'"
                 },
-                "operationsNum": {
-                    "type": "integer",
-                    "maximum": 0
+                "operationsType": {
+                    "type": "string",
+                    "example": "usn6"
                 },
                 "organizationLegal": {
                     "type": "string",
@@ -890,7 +811,7 @@ const docTemplate = `{
                     "example": true
                 },
                 "taxationSystemOperations": {
-                    "$ref": "#/definitions/dto.TaxationSystem"
+                    "type": "integer"
                 }
             }
         },
@@ -971,37 +892,6 @@ const docTemplate = `{
                     "maxLength": 50,
                     "minLength": 2,
                     "example": "Director"
-                }
-            }
-        },
-        "dto.TaxationSystem": {
-            "type": "object",
-            "required": [
-                "operations",
-                "osn",
-                "usn15",
-                "usn6"
-            ],
-            "properties": {
-                "operations": {
-                    "type": "integer",
-                    "maximum": 0,
-                    "example": 20
-                },
-                "osn": {
-                    "type": "number",
-                    "maximum": 0,
-                    "example": 49.5
-                },
-                "usn15": {
-                    "type": "number",
-                    "maximum": 0,
-                    "example": 57.2
-                },
-                "usn6": {
-                    "type": "number",
-                    "maximum": 0,
-                    "example": 84.2
                 }
             }
         },
@@ -1106,20 +996,6 @@ const docTemplate = `{
                     "maxLength": 50,
                     "minLength": 2,
                     "example": "Director"
-                }
-            }
-        },
-        "errs.MyError": {
-            "description": "All native errors must be this type",
-            "type": "object",
-            "properties": {
-                "advice": {
-                    "type": "string",
-                    "example": "Try to send request later"
-                },
-                "message": {
-                    "type": "string",
-                    "example": "Exception was occurred"
                 }
             }
         }
