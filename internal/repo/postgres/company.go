@@ -6,6 +6,7 @@ import (
 	"github.com/while-act/hackathon-backend/ent/company"
 	"github.com/while-act/hackathon-backend/internal/controller/dao"
 	"github.com/while-act/hackathon-backend/internal/controller/dto"
+	"github.com/while-act/hackathon-backend/pkg/middleware/query"
 )
 
 type CompanyStorage struct {
@@ -23,13 +24,13 @@ func (r *CompanyStorage) CreateCompany(ctx context.Context, inn string, name, we
 }
 
 func (r *CompanyStorage) GetCompanyDTO(ctx context.Context, id int) (*dao.Company, error) {
-	var comp []*dao.Company
-	err := r.companyClient.Query().Where(company.ID(id)).Select(
-		company.FieldID, company.FieldWebsite, company.FieldName).Scan(ctx, &comp)
+	comp, err := r.companyClient.Query().Where(company.ID(id)).Select(
+		company.FieldInn, company.FieldWebsite, company.FieldName).Only(ctx)
 
-	if comp != nil {
-		return comp[0], nil
+	if err == nil {
+		return query.TransformCompany(comp), nil
 	}
+
 	return nil, err
 }
 

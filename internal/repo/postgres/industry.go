@@ -5,6 +5,7 @@ import (
 	"github.com/while-act/hackathon-backend/ent"
 	"github.com/while-act/hackathon-backend/ent/industry"
 	"github.com/while-act/hackathon-backend/internal/controller/dao"
+	"github.com/while-act/hackathon-backend/pkg/middleware/query"
 )
 
 type IndustryStorage struct {
@@ -16,13 +17,12 @@ func NewIndustryStorage(industryClient *ent.IndustryClient) *IndustryStorage {
 }
 
 func (i *IndustryStorage) GetIndustry(ctx context.Context, title string) (*dao.Industry, error) {
-	var ind []*dao.Industry
-	err := i.industryClient.Query().Where(industry.ID(title)).Select(
+	ind, err := i.industryClient.Query().Where(industry.ID(title)).Select(
 		industry.FieldAvgSalary, industry.FieldAvgSalaryCad,
 		industry.FieldAvgWorkersNumCad, industry.FieldAvgWorkersNum,
-	).Scan(ctx, &ind)
-	if ind != nil {
-		return ind[0], nil
+	).Only(ctx)
+	if err == nil {
+		return query.TransformIndustry(ind), nil
 	}
 	return nil, err
 }

@@ -7,10 +7,10 @@ type Me struct {
 	LastName   string  `json:"lastName,omitempty" sql:"last_name" validate:"required" example:"Ivanov"`
 	Role       string  `json:"role,omitempty" sql:"role" validate:"required" example:"USER"`
 	CompanyID  int     `json:"-" sql:"company_id"`
-	FatherName *string `json:"fatherName,omitempty" sql:"father_name" example:"Ivanovich"`
-	Position   *string `json:"position,omitempty" sql:"position" example:"Director"`
-	Country    *string `json:"country,omitempty" sql:"country" example:"Россия"`
-	City       *string `json:"city,omitempty" sql:"city" example:"Москва"`
+	FatherName string  `json:"fatherName,omitempty" sql:"father_name" example:"Ivanovich"`
+	Position   string  `json:"position,omitempty" sql:"position" example:"Director"`
+	Country    string  `json:"country,omitempty" sql:"country" example:"Россия"`
+	City       string  `json:"city,omitempty" sql:"city" example:"Москва"`
 	Biography  *string `json:"biography,omitempty" sql:"biography" example:"I'd like to relax"`
 }
 

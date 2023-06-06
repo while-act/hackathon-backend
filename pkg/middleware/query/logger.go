@@ -3,7 +3,10 @@ package query
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/while-act/hackathon-backend/ent"
+	"github.com/while-act/hackathon-backend/internal/controller/dao"
 	"github.com/while-act/hackathon-backend/pkg/log"
+	"strings"
 	"time"
 )
 
@@ -64,4 +67,32 @@ func (q *RespHandler) HandleQueries() gin.HandlerFunc {
 
 func setColor(text any, color string) string {
 	return fmt.Sprintf("%s %v \033[0m", color, text)
+}
+
+func TransformIndustry(i *ent.Industry) *dao.Industry {
+	return &dao.Industry{
+		AvgWorkersNum:    i.AvgWorkersNum,
+		AvgWorkersNumCad: i.AvgWorkersNumCad,
+		AvgSalary:        i.AvgSalary,
+		AvgSalaryCad:     i.AvgSalaryCad,
+	}
+}
+
+func TransformToMe(user *ent.User) *dao.Me {
+	return &dao.Me{
+		Email:      user.Email[:1] + "**" + user.Email[strings.Index(user.Email, "@")-1:],
+		Name:       user.Name,
+		FirstName:  user.FirstName,
+		LastName:   user.LastName,
+		Role:       user.Role,
+		FatherName: user.FatherName,
+		Position:   user.Position,
+		Country:    user.Country,
+		City:       user.City,
+		Biography:  user.Biography,
+	}
+}
+
+func TransformCompany(c *ent.Company) *dao.Company {
+	return &dao.Company{INN: c.Inn, Name: c.Name, Website: c.Website}
 }

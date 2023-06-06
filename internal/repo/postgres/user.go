@@ -7,6 +7,7 @@ import (
 	"github.com/while-act/hackathon-backend/ent/user"
 	"github.com/while-act/hackathon-backend/internal/controller/dao"
 	"github.com/while-act/hackathon-backend/internal/controller/dto"
+	"github.com/while-act/hackathon-backend/pkg/middleware/query"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -19,13 +20,12 @@ func NewUserStorage(userClient *ent.UserClient) *UserStorage {
 }
 
 func (r *UserStorage) FindUserByID(ctx context.Context, id int) (*dao.Me, error) {
-	var me []*dao.Me
-	err := r.userClient.Query().Where(user.ID(id)).Select(user.FieldCity, user.FieldBiography,
+	customer, err := r.userClient.Query().Where(user.ID(id)).Select(user.FieldCity, user.FieldBiography,
 		user.FieldCountry, user.FieldName, user.FieldLastName,
 		user.FieldFirstName, user.FieldFatherName, user.FieldEmail,
-		user.FieldPosition, user.FieldRole, user.FieldCompanyID).Scan(ctx, &me)
-	if me != nil {
-		return me[0], nil
+		user.FieldPosition, user.FieldRole, user.FieldCompanyID).Only(ctx)
+	if err == nil {
+		return query.TransformToMe(customer), nil
 	}
 	return nil, err
 }
