@@ -7,4 +7,4 @@ You can run it by writing the `docker-compose up` command in the same directory 
 
 ### Use
 API can register and create a pdf file with monetary calculations of any company in Moscow. 
-##### Link - https://hackathon.frkam.dev/
+##### Link on public site - https://hackathon.frkam.dev/
