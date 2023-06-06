@@ -33,7 +33,7 @@ func (History) Fields() []ent.Field {
 
 		field.Float("construction_facilities_area").Positive().Immutable(),
 
-		field.String("building_type").Immutable(),
+		field.Strings("building_type").Immutable(),
 
 		field.JSON("equipment", []dto.Equipment{}).Immutable(),
 

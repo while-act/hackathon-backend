@@ -965,6 +965,16 @@ func BiographyContainsFold(v string) predicate.User {
 	return predicate.User(sql.FieldContainsFold(FieldBiography, v))
 }
 
+// SessionsIsNil applies the IsNil predicate on the "sessions" field.
+func SessionsIsNil() predicate.User {
+	return predicate.User(sql.FieldIsNull(FieldSessions))
+}
+
+// SessionsNotNil applies the NotNil predicate on the "sessions" field.
+func SessionsNotNil() predicate.User {
+	return predicate.User(sql.FieldNotNull(FieldSessions))
+}
+
 // HasCompany applies the HasEdge predicate on the "company" edge.
 func HasCompany() predicate.User {
 	return predicate.User(func(s *sql.Selector) {

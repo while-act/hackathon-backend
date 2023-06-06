@@ -10,7 +10,7 @@ import (
 	"fmt"
 	lib "github.com/while-act/hackathon-backend/ent"
 	"github.com/while-act/hackathon-backend/ent/hook"
-	"github.com/while-act/hackathon-backend/pkg/bind"
+	"github.com/while-act/hackathon-backend/pkg/middleware/bind"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -57,6 +57,8 @@ func (User) Fields() []ent.Field {
 
 		field.Text("biography").Optional().MaxLen(1024).Nillable().
 			StructTag(`json:"biography,omitempty" example:"I'd like to relax"`),
+
+		field.Strings("sessions").Optional().StructTag(`json:"-"`),
 	}
 }
 

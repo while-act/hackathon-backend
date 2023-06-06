@@ -55,7 +55,7 @@ var (
 		{Name: "land_area", Type: field.TypeFloat64},
 		{Name: "is_buy", Type: field.TypeBool},
 		{Name: "construction_facilities_area", Type: field.TypeFloat64},
-		{Name: "building_type", Type: field.TypeString},
+		{Name: "building_type", Type: field.TypeJSON},
 		{Name: "equipment", Type: field.TypeJSON},
 		{Name: "accounting_support", Type: field.TypeBool},
 		{Name: "operation_type", Type: field.TypeString, Nullable: true},
@@ -148,6 +148,7 @@ var (
 		{Name: "country", Type: field.TypeString, Nullable: true},
 		{Name: "city", Type: field.TypeString, Nullable: true},
 		{Name: "biography", Type: field.TypeString, Nullable: true, Size: 1024},
+		{Name: "sessions", Type: field.TypeJSON, Nullable: true},
 		{Name: "company_id", Type: field.TypeInt, Unique: true},
 	}
 	// UsersTable holds the schema information for the "users" table.
@@ -158,7 +159,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "users_companies_users",
-				Columns:    []*schema.Column{UsersColumns[14]},
+				Columns:    []*schema.Column{UsersColumns[15]},
 				RefColumns: []*schema.Column{CompaniesColumns[0]},
 				OnDelete:   schema.NoAction,
 			},

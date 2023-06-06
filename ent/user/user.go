@@ -43,6 +43,8 @@ const (
 	FieldCity = "city"
 	// FieldBiography holds the string denoting the biography field in the database.
 	FieldBiography = "biography"
+	// FieldSessions holds the string denoting the sessions field in the database.
+	FieldSessions = "sessions"
 	// EdgeCompany holds the string denoting the company edge name in mutations.
 	EdgeCompany = "company"
 	// EdgeHistories holds the string denoting the histories edge name in mutations.
@@ -82,6 +84,7 @@ var Columns = []string{
 	FieldCountry,
 	FieldCity,
 	FieldBiography,
+	FieldSessions,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).

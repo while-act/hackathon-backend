@@ -170,6 +170,12 @@ func (uc *UserCreate) SetNillableBiography(s *string) *UserCreate {
 	return uc
 }
 
+// SetSessions sets the "sessions" field.
+func (uc *UserCreate) SetSessions(s []string) *UserCreate {
+	uc.mutation.SetSessions(s)
+	return uc
+}
+
 // SetID sets the "id" field.
 func (uc *UserCreate) SetID(i int) *UserCreate {
 	uc.mutation.SetID(i)
@@ -411,6 +417,10 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	if value, ok := uc.mutation.Biography(); ok {
 		_spec.SetField(user.FieldBiography, field.TypeString, value)
 		_node.Biography = &value
+	}
+	if value, ok := uc.mutation.Sessions(); ok {
+		_spec.SetField(user.FieldSessions, field.TypeJSON, value)
+		_node.Sessions = value
 	}
 	if nodes := uc.mutation.CompanyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

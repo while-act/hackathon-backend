@@ -10,6 +10,7 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"entgo.io/ent/dialect/sql/sqljson"
 	"entgo.io/ent/schema/field"
 	"github.com/while-act/hackathon-backend/ent/company"
 	"github.com/while-act/hackathon-backend/ent/history"
@@ -183,6 +184,24 @@ func (uu *UserUpdate) SetNillableBiography(s *string) *UserUpdate {
 // ClearBiography clears the value of the "biography" field.
 func (uu *UserUpdate) ClearBiography() *UserUpdate {
 	uu.mutation.ClearBiography()
+	return uu
+}
+
+// SetSessions sets the "sessions" field.
+func (uu *UserUpdate) SetSessions(s []string) *UserUpdate {
+	uu.mutation.SetSessions(s)
+	return uu
+}
+
+// AppendSessions appends s to the "sessions" field.
+func (uu *UserUpdate) AppendSessions(s []string) *UserUpdate {
+	uu.mutation.AppendSessions(s)
+	return uu
+}
+
+// ClearSessions clears the value of the "sessions" field.
+func (uu *UserUpdate) ClearSessions() *UserUpdate {
+	uu.mutation.ClearSessions()
 	return uu
 }
 
@@ -395,6 +414,17 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if uu.mutation.BiographyCleared() {
 		_spec.ClearField(user.FieldBiography, field.TypeString)
+	}
+	if value, ok := uu.mutation.Sessions(); ok {
+		_spec.SetField(user.FieldSessions, field.TypeJSON, value)
+	}
+	if value, ok := uu.mutation.AppendedSessions(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, user.FieldSessions, value)
+		})
+	}
+	if uu.mutation.SessionsCleared() {
+		_spec.ClearField(user.FieldSessions, field.TypeJSON)
 	}
 	if uu.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -646,6 +676,24 @@ func (uuo *UserUpdateOne) ClearBiography() *UserUpdateOne {
 	return uuo
 }
 
+// SetSessions sets the "sessions" field.
+func (uuo *UserUpdateOne) SetSessions(s []string) *UserUpdateOne {
+	uuo.mutation.SetSessions(s)
+	return uuo
+}
+
+// AppendSessions appends s to the "sessions" field.
+func (uuo *UserUpdateOne) AppendSessions(s []string) *UserUpdateOne {
+	uuo.mutation.AppendSessions(s)
+	return uuo
+}
+
+// ClearSessions clears the value of the "sessions" field.
+func (uuo *UserUpdateOne) ClearSessions() *UserUpdateOne {
+	uuo.mutation.ClearSessions()
+	return uuo
+}
+
 // SetCompany sets the "company" edge to the Company entity.
 func (uuo *UserUpdateOne) SetCompany(c *Company) *UserUpdateOne {
 	return uuo.SetCompanyID(c.ID)
@@ -885,6 +933,17 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if uuo.mutation.BiographyCleared() {
 		_spec.ClearField(user.FieldBiography, field.TypeString)
+	}
+	if value, ok := uuo.mutation.Sessions(); ok {
+		_spec.SetField(user.FieldSessions, field.TypeJSON, value)
+	}
+	if value, ok := uuo.mutation.AppendedSessions(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, user.FieldSessions, value)
+		})
+	}
+	if uuo.mutation.SessionsCleared() {
+		_spec.ClearField(user.FieldSessions, field.TypeJSON)
 	}
 	if uuo.mutation.CompanyCleared() {
 		edge := &sqlgraph.EdgeSpec{

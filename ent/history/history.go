@@ -200,11 +200,6 @@ func ByConstructionFacilitiesArea(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldConstructionFacilitiesArea, opts...).ToFunc()
 }
 
-// ByBuildingType orders the results by the building_type field.
-func ByBuildingType(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldBuildingType, opts...).ToFunc()
-}
-
 // ByAccountingSupport orders the results by the accounting_support field.
 func ByAccountingSupport(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldAccountingSupport, opts...).ToFunc()

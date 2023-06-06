@@ -3,6 +3,7 @@
 package ent
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -46,6 +47,8 @@ type User struct {
 	City string `json:"city,omitempty" example:"Москва"`
 	// Biography holds the value of the "biography" field.
 	Biography *string `json:"biography,omitempty" example:"I'd like to relax"`
+	// Sessions holds the value of the "sessions" field.
+	Sessions []string `json:"-"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the UserQuery when eager-loading is set.
 	Edges        UserEdges `json:"edges"`
@@ -90,7 +93,7 @@ func (*User) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case user.FieldPasswordHash:
+		case user.FieldPasswordHash, user.FieldSessions:
 			values[i] = new([]byte)
 		case user.FieldID, user.FieldCompanyID:
 			values[i] = new(sql.NullInt64)
@@ -204,6 +207,14 @@ func (u *User) assignValues(columns []string, values []any) error {
 				u.Biography = new(string)
 				*u.Biography = value.String
 			}
+		case user.FieldSessions:
+			if value, ok := values[i].(*[]byte); !ok {
+				return fmt.Errorf("unexpected type %T for field sessions", values[i])
+			} else if value != nil && len(*value) > 0 {
+				if err := json.Unmarshal(*value, &u.Sessions); err != nil {
+					return fmt.Errorf("unmarshal field sessions: %w", err)
+				}
+			}
 		default:
 			u.selectValues.Set(columns[i], values[i])
 		}
@@ -292,6 +303,9 @@ func (u *User) String() string {
 		builder.WriteString("biography=")
 		builder.WriteString(*v)
 	}
+	builder.WriteString(", ")
+	builder.WriteString("sessions=")
+	builder.WriteString(fmt.Sprintf("%v", u.Sessions))
 	builder.WriteByte(')')
 	return builder.String()
 }

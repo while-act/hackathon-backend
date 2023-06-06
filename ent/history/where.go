@@ -98,11 +98,6 @@ func ConstructionFacilitiesArea(v float64) predicate.History {
 	return predicate.History(sql.FieldEQ(FieldConstructionFacilitiesArea, v))
 }
 
-// BuildingType applies equality check predicate on the "building_type" field. It's identical to BuildingTypeEQ.
-func BuildingType(v string) predicate.History {
-	return predicate.History(sql.FieldEQ(FieldBuildingType, v))
-}
-
 // AccountingSupport applies equality check predicate on the "accounting_support" field. It's identical to AccountingSupportEQ.
 func AccountingSupport(v bool) predicate.History {
 	return predicate.History(sql.FieldEQ(FieldAccountingSupport, v))
@@ -566,71 +561,6 @@ func ConstructionFacilitiesAreaLT(v float64) predicate.History {
 // ConstructionFacilitiesAreaLTE applies the LTE predicate on the "construction_facilities_area" field.
 func ConstructionFacilitiesAreaLTE(v float64) predicate.History {
 	return predicate.History(sql.FieldLTE(FieldConstructionFacilitiesArea, v))
-}
-
-// BuildingTypeEQ applies the EQ predicate on the "building_type" field.
-func BuildingTypeEQ(v string) predicate.History {
-	return predicate.History(sql.FieldEQ(FieldBuildingType, v))
-}
-
-// BuildingTypeNEQ applies the NEQ predicate on the "building_type" field.
-func BuildingTypeNEQ(v string) predicate.History {
-	return predicate.History(sql.FieldNEQ(FieldBuildingType, v))
-}
-
-// BuildingTypeIn applies the In predicate on the "building_type" field.
-func BuildingTypeIn(vs ...string) predicate.History {
-	return predicate.History(sql.FieldIn(FieldBuildingType, vs...))
-}
-
-// BuildingTypeNotIn applies the NotIn predicate on the "building_type" field.
-func BuildingTypeNotIn(vs ...string) predicate.History {
-	return predicate.History(sql.FieldNotIn(FieldBuildingType, vs...))
-}
-
-// BuildingTypeGT applies the GT predicate on the "building_type" field.
-func BuildingTypeGT(v string) predicate.History {
-	return predicate.History(sql.FieldGT(FieldBuildingType, v))
-}
-
-// BuildingTypeGTE applies the GTE predicate on the "building_type" field.
-func BuildingTypeGTE(v string) predicate.History {
-	return predicate.History(sql.FieldGTE(FieldBuildingType, v))
-}
-
-// BuildingTypeLT applies the LT predicate on the "building_type" field.
-func BuildingTypeLT(v string) predicate.History {
-	return predicate.History(sql.FieldLT(FieldBuildingType, v))
-}
-
-// BuildingTypeLTE applies the LTE predicate on the "building_type" field.
-func BuildingTypeLTE(v string) predicate.History {
-	return predicate.History(sql.FieldLTE(FieldBuildingType, v))
-}
-
-// BuildingTypeContains applies the Contains predicate on the "building_type" field.
-func BuildingTypeContains(v string) predicate.History {
-	return predicate.History(sql.FieldContains(FieldBuildingType, v))
-}
-
-// BuildingTypeHasPrefix applies the HasPrefix predicate on the "building_type" field.
-func BuildingTypeHasPrefix(v string) predicate.History {
-	return predicate.History(sql.FieldHasPrefix(FieldBuildingType, v))
-}
-
-// BuildingTypeHasSuffix applies the HasSuffix predicate on the "building_type" field.
-func BuildingTypeHasSuffix(v string) predicate.History {
-	return predicate.History(sql.FieldHasSuffix(FieldBuildingType, v))
-}
-
-// BuildingTypeEqualFold applies the EqualFold predicate on the "building_type" field.
-func BuildingTypeEqualFold(v string) predicate.History {
-	return predicate.History(sql.FieldEqualFold(FieldBuildingType, v))
-}
-
-// BuildingTypeContainsFold applies the ContainsFold predicate on the "building_type" field.
-func BuildingTypeContainsFold(v string) predicate.History {
-	return predicate.History(sql.FieldContainsFold(FieldBuildingType, v))
 }
 
 // AccountingSupportEQ applies the EQ predicate on the "accounting_support" field.

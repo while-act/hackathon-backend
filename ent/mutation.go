@@ -1629,7 +1629,8 @@ type HistoryMutation struct {
 	is_buy                          *bool
 	construction_facilities_area    *float64
 	addconstruction_facilities_area *float64
-	building_type                   *string
+	building_type                   *[]string
+	appendbuilding_type             []string
 	equipment                       *[]dto.Equipment
 	appendequipment                 []dto.Equipment
 	accounting_support              *bool
@@ -2155,12 +2156,13 @@ func (m *HistoryMutation) ResetConstructionFacilitiesArea() {
 }
 
 // SetBuildingType sets the "building_type" field.
-func (m *HistoryMutation) SetBuildingType(s string) {
+func (m *HistoryMutation) SetBuildingType(s []string) {
 	m.building_type = &s
+	m.appendbuilding_type = nil
 }
 
 // BuildingType returns the value of the "building_type" field in the mutation.
-func (m *HistoryMutation) BuildingType() (r string, exists bool) {
+func (m *HistoryMutation) BuildingType() (r []string, exists bool) {
 	v := m.building_type
 	if v == nil {
 		return
@@ -2171,7 +2173,7 @@ func (m *HistoryMutation) BuildingType() (r string, exists bool) {
 // OldBuildingType returns the old "building_type" field's value of the History entity.
 // If the History object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *HistoryMutation) OldBuildingType(ctx context.Context) (v string, err error) {
+func (m *HistoryMutation) OldBuildingType(ctx context.Context) (v []string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldBuildingType is only allowed on UpdateOne operations")
 	}
@@ -2185,9 +2187,23 @@ func (m *HistoryMutation) OldBuildingType(ctx context.Context) (v string, err er
 	return oldValue.BuildingType, nil
 }
 
+// AppendBuildingType adds s to the "building_type" field.
+func (m *HistoryMutation) AppendBuildingType(s []string) {
+	m.appendbuilding_type = append(m.appendbuilding_type, s...)
+}
+
+// AppendedBuildingType returns the list of values that were appended to the "building_type" field in this mutation.
+func (m *HistoryMutation) AppendedBuildingType() ([]string, bool) {
+	if len(m.appendbuilding_type) == 0 {
+		return nil, false
+	}
+	return m.appendbuilding_type, true
+}
+
 // ResetBuildingType resets all changes to the "building_type" field.
 func (m *HistoryMutation) ResetBuildingType() {
 	m.building_type = nil
+	m.appendbuilding_type = nil
 }
 
 // SetEquipment sets the "equipment" field.
@@ -2978,7 +2994,7 @@ func (m *HistoryMutation) SetField(name string, value ent.Value) error {
 		m.SetConstructionFacilitiesArea(v)
 		return nil
 	case history.FieldBuildingType:
-		v, ok := value.(string)
+		v, ok := value.([]string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -4747,6 +4763,8 @@ type UserMutation struct {
 	country          *string
 	city             *string
 	biography        *string
+	sessions         *[]string
+	appendsessions   []string
 	clearedFields    map[string]struct{}
 	company          *int
 	clearedcompany   bool
@@ -5431,6 +5449,71 @@ func (m *UserMutation) ResetBiography() {
 	delete(m.clearedFields, user.FieldBiography)
 }
 
+// SetSessions sets the "sessions" field.
+func (m *UserMutation) SetSessions(s []string) {
+	m.sessions = &s
+	m.appendsessions = nil
+}
+
+// Sessions returns the value of the "sessions" field in the mutation.
+func (m *UserMutation) Sessions() (r []string, exists bool) {
+	v := m.sessions
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSessions returns the old "sessions" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldSessions(ctx context.Context) (v []string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSessions is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSessions requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSessions: %w", err)
+	}
+	return oldValue.Sessions, nil
+}
+
+// AppendSessions adds s to the "sessions" field.
+func (m *UserMutation) AppendSessions(s []string) {
+	m.appendsessions = append(m.appendsessions, s...)
+}
+
+// AppendedSessions returns the list of values that were appended to the "sessions" field in this mutation.
+func (m *UserMutation) AppendedSessions() ([]string, bool) {
+	if len(m.appendsessions) == 0 {
+		return nil, false
+	}
+	return m.appendsessions, true
+}
+
+// ClearSessions clears the value of the "sessions" field.
+func (m *UserMutation) ClearSessions() {
+	m.sessions = nil
+	m.appendsessions = nil
+	m.clearedFields[user.FieldSessions] = struct{}{}
+}
+
+// SessionsCleared returns if the "sessions" field was cleared in this mutation.
+func (m *UserMutation) SessionsCleared() bool {
+	_, ok := m.clearedFields[user.FieldSessions]
+	return ok
+}
+
+// ResetSessions resets all changes to the "sessions" field.
+func (m *UserMutation) ResetSessions() {
+	m.sessions = nil
+	m.appendsessions = nil
+	delete(m.clearedFields, user.FieldSessions)
+}
+
 // ClearCompany clears the "company" edge to the Company entity.
 func (m *UserMutation) ClearCompany() {
 	m.clearedcompany = true
@@ -5545,7 +5628,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 14)
+	fields := make([]string, 0, 15)
 	if m.create_time != nil {
 		fields = append(fields, user.FieldCreateTime)
 	}
@@ -5588,6 +5671,9 @@ func (m *UserMutation) Fields() []string {
 	if m.biography != nil {
 		fields = append(fields, user.FieldBiography)
 	}
+	if m.sessions != nil {
+		fields = append(fields, user.FieldSessions)
+	}
 	return fields
 }
 
@@ -5624,6 +5710,8 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.City()
 	case user.FieldBiography:
 		return m.Biography()
+	case user.FieldSessions:
+		return m.Sessions()
 	}
 	return nil, false
 }
@@ -5661,6 +5749,8 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldCity(ctx)
 	case user.FieldBiography:
 		return m.OldBiography(ctx)
+	case user.FieldSessions:
+		return m.OldSessions(ctx)
 	}
 	return nil, fmt.Errorf("unknown User field %s", name)
 }
@@ -5768,6 +5858,13 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetBiography(v)
 		return nil
+	case user.FieldSessions:
+		v, ok := value.([]string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSessions(v)
+		return nil
 	}
 	return fmt.Errorf("unknown User field %s", name)
 }
@@ -5816,6 +5913,9 @@ func (m *UserMutation) ClearedFields() []string {
 	if m.FieldCleared(user.FieldBiography) {
 		fields = append(fields, user.FieldBiography)
 	}
+	if m.FieldCleared(user.FieldSessions) {
+		fields = append(fields, user.FieldSessions)
+	}
 	return fields
 }
 
@@ -5844,6 +5944,9 @@ func (m *UserMutation) ClearField(name string) error {
 		return nil
 	case user.FieldBiography:
 		m.ClearBiography()
+		return nil
+	case user.FieldSessions:
+		m.ClearSessions()
 		return nil
 	}
 	return fmt.Errorf("unknown User nullable field %s", name)
@@ -5894,6 +5997,9 @@ func (m *UserMutation) ResetField(name string) error {
 		return nil
 	case user.FieldBiography:
 		m.ResetBiography()
+		return nil
+	case user.FieldSessions:
+		m.ResetSessions()
 		return nil
 	}
 	return fmt.Errorf("unknown User field %s", name)

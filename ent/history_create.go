@@ -80,7 +80,7 @@ func (hc *HistoryCreate) SetConstructionFacilitiesArea(f float64) *HistoryCreate
 }
 
 // SetBuildingType sets the "building_type" field.
-func (hc *HistoryCreate) SetBuildingType(s string) *HistoryCreate {
+func (hc *HistoryCreate) SetBuildingType(s []string) *HistoryCreate {
 	hc.mutation.SetBuildingType(s)
 	return hc
 }
@@ -382,7 +382,7 @@ func (hc *HistoryCreate) createSpec() (*History, *sqlgraph.CreateSpec) {
 		_node.ConstructionFacilitiesArea = value
 	}
 	if value, ok := hc.mutation.BuildingType(); ok {
-		_spec.SetField(history.FieldBuildingType, field.TypeString, value)
+		_spec.SetField(history.FieldBuildingType, field.TypeJSON, value)
 		_node.BuildingType = value
 	}
 	if value, ok := hc.mutation.Equipment(); ok {
