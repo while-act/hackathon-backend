@@ -3,10 +3,11 @@ package service
 import (
 	"bytes"
 	pdff "github.com/SebastiaanKlippert/go-wkhtmltopdf"
-	"github.com/sirupsen/logrus"
+	"github.com/while-act/hackathon-backend/ent"
+	"github.com/while-act/hackathon-backend/internal/controller/dto"
+	"github.com/while-act/hackathon-backend/pkg/log"
 	"html/template"
 	"io"
-	"log"
 )
 
 type PDF struct {
@@ -14,6 +15,7 @@ type PDF struct {
 }
 
 type Params struct {
+	Name              string
 	IndustryBranch    string
 	OrganizationType  string
 	FullTimeEmployers int
@@ -27,31 +29,98 @@ type Params struct {
 	Equipment         float64
 	Taxes             float64
 	SocialInsurance   float64
-	Other             *string
+	Other             string
 	Total             float64
-	///////
-	Staff               float64
-	RentalProperty      float64
-	Services            float64
-	StaffNum            int
-	MinStaffMaintenance float64
-	MaxStaffMaintenance float64
 }
 
 func NewPDF(templatePath string) *PDF {
 	t, err := template.ParseFiles(templatePath)
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatal(err)
 	}
 
 	pdff.SetPath("pkg/wkhtmltopdf/wkhtmltopdf.exe")
 
 	_, err = pdff.NewPDFGenerator()
 	if err != nil {
-		logrus.WithError(err).Fatal("can't find wkhtmltopdf.exe")
+		log.WithErr(err).Fatal("can't find wkhtmltopdf.exe")
 	}
 
 	return &PDF{t: t}
+}
+
+func (r *PDF) CalcDTO(h *dto.History, dist *ent.District, tax float64) Params {
+	p := Params{
+		Name:              h.Name,
+		Other:             h.Other,
+		IndustryBranch:    h.IndustryBranch,
+		OrganizationType:  h.OrganizationLegal,
+		FullTimeEmployers: h.FullTimeEmployees,
+		LandArea:          h.LandArea,
+	}
+
+	wageFund := float64(h.FullTimeEmployees) * h.AvgSalary * 12
+	p.InsurancePayment = wageFund * 0.3
+	p.IncomeTax = wageFund * 0.13
+	p.WageFund = wageFund + p.InsurancePayment + p.IncomeTax
+	p.SocialInsurance = wageFund * 30
+	p.Total += p.WageFund + p.SocialInsurance + p.InsurancePayment + p.IncomeTax
+
+	if h.IsBuy {
+		p.LandValue = h.LandArea * dist.AvgCadastralVal
+		p.LandValueMin = h.ConstructionFacilitiesArea * 80
+		p.LandValueMax = h.ConstructionFacilitiesArea * 120
+	} else {
+		p.LandValue = h.LandArea * dist.AvgCadastralVal * 0.003
+	}
+	p.Total += p.LandValue
+	for _, v := range h.Equipment {
+		p.Equipment += v.Price
+	}
+	p.Total += p.Equipment
+	if h.AccountingSupport {
+		p.Taxes = tax + (0.5 * float64(h.FullTimeEmployees))
+		p.Total += p.Taxes
+	}
+
+	return p
+}
+
+func (r *PDF) CalcDB(h *ent.History, dist *ent.District, tax float64) Params {
+	p := Params{
+		Name:              h.Name,
+		Other:             h.Other,
+		IndustryBranch:    h.IndustryBranch,
+		OrganizationType:  h.OrganizationalLegal,
+		FullTimeEmployers: h.FullTimeEmployees,
+		LandArea:          h.LandArea,
+	}
+
+	wageFund := float64(h.FullTimeEmployees) * h.AvgSalary * 12
+	p.InsurancePayment = wageFund * 0.3
+	p.IncomeTax = wageFund * 0.13
+	p.WageFund = wageFund + p.InsurancePayment + p.IncomeTax
+	p.SocialInsurance = wageFund * 30
+	p.Total += p.WageFund + p.SocialInsurance + p.InsurancePayment + p.IncomeTax
+
+	if h.IsBuy {
+		p.LandValue = h.LandArea * dist.AvgCadastralVal
+		p.LandValueMin = h.ConstructionFacilitiesArea * 80
+		p.LandValueMax = h.ConstructionFacilitiesArea * 120
+	} else {
+		p.LandValue = h.LandArea * dist.AvgCadastralVal * 0.003
+	}
+	p.Total += p.LandValue
+	for _, v := range h.Equipment {
+		p.Equipment += v.Price
+	}
+	p.Total += p.Equipment
+	if h.AccountingSupport {
+		p.Taxes = tax + (0.5 * float64(h.FullTimeEmployees))
+		p.Total += p.Taxes
+	}
+
+	return p
 }
 
 func (r *PDF) GeneratePDF(out io.Writer, data Params) error {
