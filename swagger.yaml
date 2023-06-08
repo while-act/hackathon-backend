@@ -89,18 +89,6 @@ definitions:
     - name
     - role
     type: object
-  dto.BusinessActivity:
-    properties:
-      subType:
-        example: Много букав
-        type: string
-      type:
-        example: Много букав
-        type: string
-    required:
-    - subType
-    - type
-    type: object
   dto.Email:
     properties:
       email:
@@ -137,7 +125,8 @@ definitions:
           type: string
         type: array
       business_activity:
-        $ref: '#/definitions/dto.BusinessActivity'
+        example: Ремонт, чистка, окраска и пошив обуви
+        type: string
       constructionFacilitiesArea:
         example: 50
         minimum: 0
