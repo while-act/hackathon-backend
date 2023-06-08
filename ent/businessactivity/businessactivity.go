@@ -11,15 +11,13 @@ const (
 	// Label holds the string label denoting the businessactivity type in the database.
 	Label = "business_activity"
 	// FieldID holds the string denoting the id field in the database.
-	FieldID = "id"
-	// FieldType holds the string denoting the type field in the database.
-	FieldType = "type"
-	// FieldSubType holds the string denoting the sub_type field in the database.
-	FieldSubType = "sub_type"
+	FieldID = "type"
 	// FieldTotal holds the string denoting the total field in the database.
 	FieldTotal = "total"
 	// EdgeHistories holds the string denoting the histories edge name in mutations.
 	EdgeHistories = "histories"
+	// HistoryFieldID holds the string denoting the ID field of the History.
+	HistoryFieldID = "id"
 	// Table holds the table name of the businessactivity in the database.
 	Table = "business_activities"
 	// HistoriesTable is the table that holds the histories relation/edge.
@@ -28,14 +26,12 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "history" package.
 	HistoriesInverseTable = "histories"
 	// HistoriesColumn is the table column denoting the histories relation/edge.
-	HistoriesColumn = "business_activity_id"
+	HistoriesColumn = "business_activity_type"
 )
 
 // Columns holds all SQL columns for businessactivity fields.
 var Columns = []string{
 	FieldID,
-	FieldType,
-	FieldSubType,
 	FieldTotal,
 }
 
@@ -62,16 +58,6 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByType orders the results by the type field.
-func ByType(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldType, opts...).ToFunc()
-}
-
-// BySubType orders the results by the sub_type field.
-func BySubType(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldSubType, opts...).ToFunc()
-}
-
 // ByTotal orders the results by the total field.
 func ByTotal(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldTotal, opts...).ToFunc()
@@ -93,7 +79,7 @@ func ByHistories(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 func newHistoriesStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(HistoriesInverseTable, FieldID),
+		sqlgraph.To(HistoriesInverseTable, HistoryFieldID),
 		sqlgraph.Edge(sqlgraph.O2M, false, HistoriesTable, HistoriesColumn),
 	)
 }

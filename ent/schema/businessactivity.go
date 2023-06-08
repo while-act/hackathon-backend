@@ -14,8 +14,7 @@ type BusinessActivity struct {
 // Fields of the BusinessActivity.
 func (BusinessActivity) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("type"),
-		field.String("sub_type"),
+		field.String("id").StorageKey("type").Unique(),
 		field.Float("total").Positive(),
 	}
 }

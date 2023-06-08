@@ -18,7 +18,7 @@ func (h *HistoryStorage) GetHistory(ctx context.Context, historyId int) (*ent.Hi
 	return h.historyClient.Get(ctx, historyId)
 }
 
-func (h *HistoryStorage) CreateHistory(ctx context.Context, data *dto.History, busactId *int, userId int) error {
+func (h *HistoryStorage) CreateHistory(ctx context.Context, data *dto.History, busType string, userId int) error {
 	return h.historyClient.Create().
 		SetName(data.Name).
 		SetOrganizationalLegal(data.OrganizationLegal).
@@ -35,7 +35,7 @@ func (h *HistoryStorage) CreateHistory(ctx context.Context, data *dto.History, b
 		SetNillableTaxationSystemOperations(data.TaxationSystemOperations).
 		SetNillableOperationType(data.OperationsType).
 		SetPatentCalc(data.PatentCalc).
-		SetNillableBusinessActivityID(busactId).
+		SetBusinessActivityType(busType).
 		SetOther(data.Other).
 		SetUserID(userId).Exec(ctx)
 

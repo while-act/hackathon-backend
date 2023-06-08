@@ -42,8 +42,8 @@ const (
 	FieldOperationType = "operation_type"
 	// FieldPatentCalc holds the string denoting the patent_calc field in the database.
 	FieldPatentCalc = "patent_calc"
-	// FieldBusinessActivityID holds the string denoting the business_activity_id field in the database.
-	FieldBusinessActivityID = "business_activity_id"
+	// FieldBusinessActivityType holds the string denoting the business_activity_type field in the database.
+	FieldBusinessActivityType = "business_activity_type"
 	// FieldOther holds the string denoting the other field in the database.
 	FieldOther = "other"
 	// FieldUserID holds the string denoting the user_id field in the database.
@@ -62,6 +62,8 @@ const (
 	IndustryFieldID = "branch"
 	// TaxationSystemFieldID holds the string denoting the ID field of the TaxationSystem.
 	TaxationSystemFieldID = "operations"
+	// BusinessActivityFieldID holds the string denoting the ID field of the BusinessActivity.
+	BusinessActivityFieldID = "type"
 	// DistrictFieldID holds the string denoting the ID field of the District.
 	DistrictFieldID = "title"
 	// Table holds the table name of the history in the database.
@@ -86,7 +88,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "businessactivity" package.
 	BusinessActivityInverseTable = "business_activities"
 	// BusinessActivityColumn is the table column denoting the business_activity relation/edge.
-	BusinessActivityColumn = "business_activity_id"
+	BusinessActivityColumn = "business_activity_type"
 	// DistrictTable is the table that holds the district relation/edge.
 	DistrictTable = "histories"
 	// DistrictInverseTable is the table name for the District entity.
@@ -121,7 +123,7 @@ var Columns = []string{
 	FieldTaxationSystemOperations,
 	FieldOperationType,
 	FieldPatentCalc,
-	FieldBusinessActivityID,
+	FieldBusinessActivityType,
 	FieldOther,
 	FieldUserID,
 }
@@ -220,9 +222,9 @@ func ByPatentCalc(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPatentCalc, opts...).ToFunc()
 }
 
-// ByBusinessActivityID orders the results by the business_activity_id field.
-func ByBusinessActivityID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldBusinessActivityID, opts...).ToFunc()
+// ByBusinessActivityType orders the results by the business_activity_type field.
+func ByBusinessActivityType(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldBusinessActivityType, opts...).ToFunc()
 }
 
 // ByOther orders the results by the other field.
@@ -286,7 +288,7 @@ func newTaxationSystemsStep() *sqlgraph.Step {
 func newBusinessActivityStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(BusinessActivityInverseTable, FieldID),
+		sqlgraph.To(BusinessActivityInverseTable, BusinessActivityFieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, BusinessActivityTable, BusinessActivityColumn),
 	)
 }

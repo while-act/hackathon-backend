@@ -9,193 +9,63 @@ import (
 )
 
 // ID filters vertices based on their ID field.
-func ID(id int) predicate.BusinessActivity {
+func ID(id string) predicate.BusinessActivity {
 	return predicate.BusinessActivity(sql.FieldEQ(FieldID, id))
 }
 
 // IDEQ applies the EQ predicate on the ID field.
-func IDEQ(id int) predicate.BusinessActivity {
+func IDEQ(id string) predicate.BusinessActivity {
 	return predicate.BusinessActivity(sql.FieldEQ(FieldID, id))
 }
 
 // IDNEQ applies the NEQ predicate on the ID field.
-func IDNEQ(id int) predicate.BusinessActivity {
+func IDNEQ(id string) predicate.BusinessActivity {
 	return predicate.BusinessActivity(sql.FieldNEQ(FieldID, id))
 }
 
 // IDIn applies the In predicate on the ID field.
-func IDIn(ids ...int) predicate.BusinessActivity {
+func IDIn(ids ...string) predicate.BusinessActivity {
 	return predicate.BusinessActivity(sql.FieldIn(FieldID, ids...))
 }
 
 // IDNotIn applies the NotIn predicate on the ID field.
-func IDNotIn(ids ...int) predicate.BusinessActivity {
+func IDNotIn(ids ...string) predicate.BusinessActivity {
 	return predicate.BusinessActivity(sql.FieldNotIn(FieldID, ids...))
 }
 
 // IDGT applies the GT predicate on the ID field.
-func IDGT(id int) predicate.BusinessActivity {
+func IDGT(id string) predicate.BusinessActivity {
 	return predicate.BusinessActivity(sql.FieldGT(FieldID, id))
 }
 
 // IDGTE applies the GTE predicate on the ID field.
-func IDGTE(id int) predicate.BusinessActivity {
+func IDGTE(id string) predicate.BusinessActivity {
 	return predicate.BusinessActivity(sql.FieldGTE(FieldID, id))
 }
 
 // IDLT applies the LT predicate on the ID field.
-func IDLT(id int) predicate.BusinessActivity {
+func IDLT(id string) predicate.BusinessActivity {
 	return predicate.BusinessActivity(sql.FieldLT(FieldID, id))
 }
 
 // IDLTE applies the LTE predicate on the ID field.
-func IDLTE(id int) predicate.BusinessActivity {
+func IDLTE(id string) predicate.BusinessActivity {
 	return predicate.BusinessActivity(sql.FieldLTE(FieldID, id))
 }
 
-// Type applies equality check predicate on the "type" field. It's identical to TypeEQ.
-func Type(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldEQ(FieldType, v))
+// IDEqualFold applies the EqualFold predicate on the ID field.
+func IDEqualFold(id string) predicate.BusinessActivity {
+	return predicate.BusinessActivity(sql.FieldEqualFold(FieldID, id))
 }
 
-// SubType applies equality check predicate on the "sub_type" field. It's identical to SubTypeEQ.
-func SubType(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldEQ(FieldSubType, v))
+// IDContainsFold applies the ContainsFold predicate on the ID field.
+func IDContainsFold(id string) predicate.BusinessActivity {
+	return predicate.BusinessActivity(sql.FieldContainsFold(FieldID, id))
 }
 
 // Total applies equality check predicate on the "total" field. It's identical to TotalEQ.
 func Total(v float64) predicate.BusinessActivity {
 	return predicate.BusinessActivity(sql.FieldEQ(FieldTotal, v))
-}
-
-// TypeEQ applies the EQ predicate on the "type" field.
-func TypeEQ(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldEQ(FieldType, v))
-}
-
-// TypeNEQ applies the NEQ predicate on the "type" field.
-func TypeNEQ(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldNEQ(FieldType, v))
-}
-
-// TypeIn applies the In predicate on the "type" field.
-func TypeIn(vs ...string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldIn(FieldType, vs...))
-}
-
-// TypeNotIn applies the NotIn predicate on the "type" field.
-func TypeNotIn(vs ...string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldNotIn(FieldType, vs...))
-}
-
-// TypeGT applies the GT predicate on the "type" field.
-func TypeGT(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldGT(FieldType, v))
-}
-
-// TypeGTE applies the GTE predicate on the "type" field.
-func TypeGTE(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldGTE(FieldType, v))
-}
-
-// TypeLT applies the LT predicate on the "type" field.
-func TypeLT(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldLT(FieldType, v))
-}
-
-// TypeLTE applies the LTE predicate on the "type" field.
-func TypeLTE(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldLTE(FieldType, v))
-}
-
-// TypeContains applies the Contains predicate on the "type" field.
-func TypeContains(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldContains(FieldType, v))
-}
-
-// TypeHasPrefix applies the HasPrefix predicate on the "type" field.
-func TypeHasPrefix(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldHasPrefix(FieldType, v))
-}
-
-// TypeHasSuffix applies the HasSuffix predicate on the "type" field.
-func TypeHasSuffix(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldHasSuffix(FieldType, v))
-}
-
-// TypeEqualFold applies the EqualFold predicate on the "type" field.
-func TypeEqualFold(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldEqualFold(FieldType, v))
-}
-
-// TypeContainsFold applies the ContainsFold predicate on the "type" field.
-func TypeContainsFold(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldContainsFold(FieldType, v))
-}
-
-// SubTypeEQ applies the EQ predicate on the "sub_type" field.
-func SubTypeEQ(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldEQ(FieldSubType, v))
-}
-
-// SubTypeNEQ applies the NEQ predicate on the "sub_type" field.
-func SubTypeNEQ(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldNEQ(FieldSubType, v))
-}
-
-// SubTypeIn applies the In predicate on the "sub_type" field.
-func SubTypeIn(vs ...string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldIn(FieldSubType, vs...))
-}
-
-// SubTypeNotIn applies the NotIn predicate on the "sub_type" field.
-func SubTypeNotIn(vs ...string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldNotIn(FieldSubType, vs...))
-}
-
-// SubTypeGT applies the GT predicate on the "sub_type" field.
-func SubTypeGT(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldGT(FieldSubType, v))
-}
-
-// SubTypeGTE applies the GTE predicate on the "sub_type" field.
-func SubTypeGTE(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldGTE(FieldSubType, v))
-}
-
-// SubTypeLT applies the LT predicate on the "sub_type" field.
-func SubTypeLT(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldLT(FieldSubType, v))
-}
-
-// SubTypeLTE applies the LTE predicate on the "sub_type" field.
-func SubTypeLTE(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldLTE(FieldSubType, v))
-}
-
-// SubTypeContains applies the Contains predicate on the "sub_type" field.
-func SubTypeContains(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldContains(FieldSubType, v))
-}
-
-// SubTypeHasPrefix applies the HasPrefix predicate on the "sub_type" field.
-func SubTypeHasPrefix(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldHasPrefix(FieldSubType, v))
-}
-
-// SubTypeHasSuffix applies the HasSuffix predicate on the "sub_type" field.
-func SubTypeHasSuffix(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldHasSuffix(FieldSubType, v))
-}
-
-// SubTypeEqualFold applies the EqualFold predicate on the "sub_type" field.
-func SubTypeEqualFold(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldEqualFold(FieldSubType, v))
-}
-
-// SubTypeContainsFold applies the ContainsFold predicate on the "sub_type" field.
-func SubTypeContainsFold(v string) predicate.BusinessActivity {
-	return predicate.BusinessActivity(sql.FieldContainsFold(FieldSubType, v))
 }
 
 // TotalEQ applies the EQ predicate on the "total" field.

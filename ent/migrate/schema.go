@@ -10,9 +10,7 @@ import (
 var (
 	// BusinessActivitiesColumns holds the columns for the "business_activities" table.
 	BusinessActivitiesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "type", Type: field.TypeString},
-		{Name: "sub_type", Type: field.TypeString},
+		{Name: "type", Type: field.TypeString, Unique: true},
 		{Name: "total", Type: field.TypeFloat64},
 	}
 	// BusinessActivitiesTable holds the schema information for the "business_activities" table.
@@ -61,7 +59,7 @@ var (
 		{Name: "operation_type", Type: field.TypeString, Nullable: true},
 		{Name: "patent_calc", Type: field.TypeBool},
 		{Name: "other", Type: field.TypeString, Nullable: true, Size: 2147483647},
-		{Name: "business_activity_id", Type: field.TypeInt, Nullable: true},
+		{Name: "business_activity_type", Type: field.TypeString, Nullable: true},
 		{Name: "district_title", Type: field.TypeString},
 		{Name: "industry_branch", Type: field.TypeString},
 		{Name: "taxation_system_operations", Type: field.TypeInt, Nullable: true},

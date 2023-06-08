@@ -631,10 +631,10 @@ func (hq *HistoryQuery) loadTaxationSystems(ctx context.Context, query *Taxation
 	return nil
 }
 func (hq *HistoryQuery) loadBusinessActivity(ctx context.Context, query *BusinessActivityQuery, nodes []*History, init func(*History), assign func(*History, *BusinessActivity)) error {
-	ids := make([]int, 0, len(nodes))
-	nodeids := make(map[int][]*History)
+	ids := make([]string, 0, len(nodes))
+	nodeids := make(map[string][]*History)
 	for i := range nodes {
-		fk := nodes[i].BusinessActivityID
+		fk := nodes[i].BusinessActivityType
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -651,7 +651,7 @@ func (hq *HistoryQuery) loadBusinessActivity(ctx context.Context, query *Busines
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "business_activity_id" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "business_activity_type" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -750,7 +750,7 @@ func (hq *HistoryQuery) querySpec() *sqlgraph.QuerySpec {
 			_spec.Node.AddColumnOnce(history.FieldTaxationSystemOperations)
 		}
 		if hq.withBusinessActivity != nil {
-			_spec.Node.AddColumnOnce(history.FieldBusinessActivityID)
+			_spec.Node.AddColumnOnce(history.FieldBusinessActivityType)
 		}
 		if hq.withDistrict != nil {
 			_spec.Node.AddColumnOnce(history.FieldDistrictTitle)

@@ -15,11 +15,7 @@ import (
 type BusinessActivity struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID int `json:"id,omitempty"`
-	// Type holds the value of the "type" field.
-	Type string `json:"type,omitempty"`
-	// SubType holds the value of the "sub_type" field.
-	SubType string `json:"sub_type,omitempty"`
+	ID string `json:"id,omitempty"`
 	// Total holds the value of the "total" field.
 	Total float64 `json:"total,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -54,8 +50,6 @@ func (*BusinessActivity) scanValues(columns []string) ([]any, error) {
 		case businessactivity.FieldTotal:
 			values[i] = new(sql.NullFloat64)
 		case businessactivity.FieldID:
-			values[i] = new(sql.NullInt64)
-		case businessactivity.FieldType, businessactivity.FieldSubType:
 			values[i] = new(sql.NullString)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -73,22 +67,10 @@ func (ba *BusinessActivity) assignValues(columns []string, values []any) error {
 	for i := range columns {
 		switch columns[i] {
 		case businessactivity.FieldID:
-			value, ok := values[i].(*sql.NullInt64)
-			if !ok {
-				return fmt.Errorf("unexpected type %T for field id", value)
-			}
-			ba.ID = int(value.Int64)
-		case businessactivity.FieldType:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field type", values[i])
+				return fmt.Errorf("unexpected type %T for field id", values[i])
 			} else if value.Valid {
-				ba.Type = value.String
-			}
-		case businessactivity.FieldSubType:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field sub_type", values[i])
-			} else if value.Valid {
-				ba.SubType = value.String
+				ba.ID = value.String
 			}
 		case businessactivity.FieldTotal:
 			if value, ok := values[i].(*sql.NullFloat64); !ok {
@@ -137,12 +119,6 @@ func (ba *BusinessActivity) String() string {
 	var builder strings.Builder
 	builder.WriteString("BusinessActivity(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", ba.ID))
-	builder.WriteString("type=")
-	builder.WriteString(ba.Type)
-	builder.WriteString(", ")
-	builder.WriteString("sub_type=")
-	builder.WriteString(ba.SubType)
-	builder.WriteString(", ")
 	builder.WriteString("total=")
 	builder.WriteString(fmt.Sprintf("%v", ba.Total))
 	builder.WriteByte(')')

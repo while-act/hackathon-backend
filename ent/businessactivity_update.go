@@ -28,18 +28,6 @@ func (bau *BusinessActivityUpdate) Where(ps ...predicate.BusinessActivity) *Busi
 	return bau
 }
 
-// SetType sets the "type" field.
-func (bau *BusinessActivityUpdate) SetType(s string) *BusinessActivityUpdate {
-	bau.mutation.SetType(s)
-	return bau
-}
-
-// SetSubType sets the "sub_type" field.
-func (bau *BusinessActivityUpdate) SetSubType(s string) *BusinessActivityUpdate {
-	bau.mutation.SetSubType(s)
-	return bau
-}
-
 // SetTotal sets the "total" field.
 func (bau *BusinessActivityUpdate) SetTotal(f float64) *BusinessActivityUpdate {
 	bau.mutation.ResetTotal()
@@ -135,19 +123,13 @@ func (bau *BusinessActivityUpdate) sqlSave(ctx context.Context) (n int, err erro
 	if err := bau.check(); err != nil {
 		return n, err
 	}
-	_spec := sqlgraph.NewUpdateSpec(businessactivity.Table, businessactivity.Columns, sqlgraph.NewFieldSpec(businessactivity.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewUpdateSpec(businessactivity.Table, businessactivity.Columns, sqlgraph.NewFieldSpec(businessactivity.FieldID, field.TypeString))
 	if ps := bau.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := bau.mutation.GetType(); ok {
-		_spec.SetField(businessactivity.FieldType, field.TypeString, value)
-	}
-	if value, ok := bau.mutation.SubType(); ok {
-		_spec.SetField(businessactivity.FieldSubType, field.TypeString, value)
 	}
 	if value, ok := bau.mutation.Total(); ok {
 		_spec.SetField(businessactivity.FieldTotal, field.TypeFloat64, value)
@@ -218,18 +200,6 @@ type BusinessActivityUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *BusinessActivityMutation
-}
-
-// SetType sets the "type" field.
-func (bauo *BusinessActivityUpdateOne) SetType(s string) *BusinessActivityUpdateOne {
-	bauo.mutation.SetType(s)
-	return bauo
-}
-
-// SetSubType sets the "sub_type" field.
-func (bauo *BusinessActivityUpdateOne) SetSubType(s string) *BusinessActivityUpdateOne {
-	bauo.mutation.SetSubType(s)
-	return bauo
 }
 
 // SetTotal sets the "total" field.
@@ -340,7 +310,7 @@ func (bauo *BusinessActivityUpdateOne) sqlSave(ctx context.Context) (_node *Busi
 	if err := bauo.check(); err != nil {
 		return _node, err
 	}
-	_spec := sqlgraph.NewUpdateSpec(businessactivity.Table, businessactivity.Columns, sqlgraph.NewFieldSpec(businessactivity.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewUpdateSpec(businessactivity.Table, businessactivity.Columns, sqlgraph.NewFieldSpec(businessactivity.FieldID, field.TypeString))
 	id, ok := bauo.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "BusinessActivity.id" for update`)}
@@ -364,12 +334,6 @@ func (bauo *BusinessActivityUpdateOne) sqlSave(ctx context.Context) (_node *Busi
 				ps[i](selector)
 			}
 		}
-	}
-	if value, ok := bauo.mutation.GetType(); ok {
-		_spec.SetField(businessactivity.FieldType, field.TypeString, value)
-	}
-	if value, ok := bauo.mutation.SubType(); ok {
-		_spec.SetField(businessactivity.FieldSubType, field.TypeString, value)
 	}
 	if value, ok := bauo.mutation.Total(); ok {
 		_spec.SetField(businessactivity.FieldTotal, field.TypeFloat64, value)

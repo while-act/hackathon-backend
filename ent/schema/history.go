@@ -45,7 +45,7 @@ func (History) Fields() []ent.Field {
 
 		field.Bool("patent_calc").Immutable(), //true == next one
 
-		field.Int("business_activity_id").Optional().Immutable(),
+		field.String("business_activity_type").Optional().Immutable(),
 
 		field.Text("other").Optional().Immutable(),
 
@@ -67,7 +67,7 @@ func (History) Edges() []ent.Edge {
 
 		edge.From("business_activity", BusinessActivity.Type).
 			Ref("histories").Immutable().
-			Unique().Field("business_activity_id"),
+			Unique().Field("business_activity_type"),
 
 		edge.From("district", District.Type).
 			Ref("histories").

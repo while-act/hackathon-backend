@@ -106,8 +106,8 @@ func (baq *BusinessActivityQuery) FirstX(ctx context.Context) *BusinessActivity 
 
 // FirstID returns the first BusinessActivity ID from the query.
 // Returns a *NotFoundError when no BusinessActivity ID was found.
-func (baq *BusinessActivityQuery) FirstID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (baq *BusinessActivityQuery) FirstID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = baq.Limit(1).IDs(setContextOp(ctx, baq.ctx, "FirstID")); err != nil {
 		return
 	}
@@ -119,7 +119,7 @@ func (baq *BusinessActivityQuery) FirstID(ctx context.Context) (id int, err erro
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (baq *BusinessActivityQuery) FirstIDX(ctx context.Context) int {
+func (baq *BusinessActivityQuery) FirstIDX(ctx context.Context) string {
 	id, err := baq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -157,8 +157,8 @@ func (baq *BusinessActivityQuery) OnlyX(ctx context.Context) *BusinessActivity {
 // OnlyID is like Only, but returns the only BusinessActivity ID in the query.
 // Returns a *NotSingularError when more than one BusinessActivity ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (baq *BusinessActivityQuery) OnlyID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (baq *BusinessActivityQuery) OnlyID(ctx context.Context) (id string, err error) {
+	var ids []string
 	if ids, err = baq.Limit(2).IDs(setContextOp(ctx, baq.ctx, "OnlyID")); err != nil {
 		return
 	}
@@ -174,7 +174,7 @@ func (baq *BusinessActivityQuery) OnlyID(ctx context.Context) (id int, err error
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (baq *BusinessActivityQuery) OnlyIDX(ctx context.Context) int {
+func (baq *BusinessActivityQuery) OnlyIDX(ctx context.Context) string {
 	id, err := baq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -202,7 +202,7 @@ func (baq *BusinessActivityQuery) AllX(ctx context.Context) []*BusinessActivity 
 }
 
 // IDs executes the query and returns a list of BusinessActivity IDs.
-func (baq *BusinessActivityQuery) IDs(ctx context.Context) (ids []int, err error) {
+func (baq *BusinessActivityQuery) IDs(ctx context.Context) (ids []string, err error) {
 	if baq.ctx.Unique == nil && baq.path != nil {
 		baq.Unique(true)
 	}
@@ -214,7 +214,7 @@ func (baq *BusinessActivityQuery) IDs(ctx context.Context) (ids []int, err error
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (baq *BusinessActivityQuery) IDsX(ctx context.Context) []int {
+func (baq *BusinessActivityQuery) IDsX(ctx context.Context) []string {
 	ids, err := baq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -298,12 +298,12 @@ func (baq *BusinessActivityQuery) WithHistories(opts ...func(*HistoryQuery)) *Bu
 // Example:
 //
 //	var v []struct {
-//		Type string `json:"type,omitempty"`
+//		Total float64 `json:"total,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.BusinessActivity.Query().
-//		GroupBy(businessactivity.FieldType).
+//		GroupBy(businessactivity.FieldTotal).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (baq *BusinessActivityQuery) GroupBy(field string, fields ...string) *BusinessActivityGroupBy {
@@ -321,11 +321,11 @@ func (baq *BusinessActivityQuery) GroupBy(field string, fields ...string) *Busin
 // Example:
 //
 //	var v []struct {
-//		Type string `json:"type,omitempty"`
+//		Total float64 `json:"total,omitempty"`
 //	}
 //
 //	client.BusinessActivity.Query().
-//		Select(businessactivity.FieldType).
+//		Select(businessactivity.FieldTotal).
 //		Scan(ctx, &v)
 func (baq *BusinessActivityQuery) Select(fields ...string) *BusinessActivitySelect {
 	baq.ctx.Fields = append(baq.ctx.Fields, fields...)
@@ -404,7 +404,7 @@ func (baq *BusinessActivityQuery) sqlAll(ctx context.Context, hooks ...queryHook
 
 func (baq *BusinessActivityQuery) loadHistories(ctx context.Context, query *HistoryQuery, nodes []*BusinessActivity, init func(*BusinessActivity), assign func(*BusinessActivity, *History)) error {
 	fks := make([]driver.Value, 0, len(nodes))
-	nodeids := make(map[int]*BusinessActivity)
+	nodeids := make(map[string]*BusinessActivity)
 	for i := range nodes {
 		fks = append(fks, nodes[i].ID)
 		nodeids[nodes[i].ID] = nodes[i]
@@ -413,7 +413,7 @@ func (baq *BusinessActivityQuery) loadHistories(ctx context.Context, query *Hist
 		}
 	}
 	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(history.FieldBusinessActivityID)
+		query.ctx.AppendFieldOnce(history.FieldBusinessActivityType)
 	}
 	query.Where(predicate.History(func(s *sql.Selector) {
 		s.Where(sql.InValues(s.C(businessactivity.HistoriesColumn), fks...))
@@ -423,10 +423,10 @@ func (baq *BusinessActivityQuery) loadHistories(ctx context.Context, query *Hist
 		return err
 	}
 	for _, n := range neighbors {
-		fk := n.BusinessActivityID
+		fk := n.BusinessActivityType
 		node, ok := nodeids[fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "business_activity_id" returned %v for node %v`, fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "business_activity_type" returned %v for node %v`, fk, n.ID)
 		}
 		assign(node, n)
 	}
@@ -443,7 +443,7 @@ func (baq *BusinessActivityQuery) sqlCount(ctx context.Context) (int, error) {
 }
 
 func (baq *BusinessActivityQuery) querySpec() *sqlgraph.QuerySpec {
-	_spec := sqlgraph.NewQuerySpec(businessactivity.Table, businessactivity.Columns, sqlgraph.NewFieldSpec(businessactivity.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewQuerySpec(businessactivity.Table, businessactivity.Columns, sqlgraph.NewFieldSpec(businessactivity.FieldID, field.TypeString))
 	_spec.From = baq.sql
 	if unique := baq.ctx.Unique; unique != nil {
 		_spec.Unique = *unique

@@ -22,7 +22,7 @@ func init() {
 	businessactivityFields := schema.BusinessActivity{}.Fields()
 	_ = businessactivityFields
 	// businessactivityDescTotal is the schema descriptor for total field.
-	businessactivityDescTotal := businessactivityFields[2].Descriptor()
+	businessactivityDescTotal := businessactivityFields[1].Descriptor()
 	// businessactivity.TotalValidator is a validator for the "total" field. It is called by the builders before save.
 	businessactivity.TotalValidator = businessactivityDescTotal.Validators[0].(func(float64) error)
 	companyFields := schema.Company{}.Fields()

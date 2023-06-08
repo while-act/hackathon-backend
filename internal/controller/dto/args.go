@@ -7,11 +7,6 @@ type TaxationSystem struct {
 	OSN        float64 `json:"osn,omitempty" validate:"required,gte=0" sql:"osn" example:"49.5"`
 }
 
-type BusinessActivity struct {
-	Type    string `json:"type,omitempty" validate:"required" sql:"type" example:"Много букав"`
-	SubType string `json:"subType,omitempty" validate:"required" sql:"sub_type" example:"Много букав"`
-}
-
 type Equipment struct {
 	Type  string  `json:"type,omitempty" sql:"type" validate:"required" example:"Станок"`
 	Price float64 `json:"price,omitempty" sql:"price" validate:"omitempty,gte=0" example:"3058.12"`

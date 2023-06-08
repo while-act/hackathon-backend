@@ -8,7 +8,7 @@ import (
 
 type HistoryPostgres interface {
 	GetHistory(ctx context.Context, historyId int) (*ent.History, error)
-	CreateHistory(ctx context.Context, h *dto.History, busactId *int, userId int) error
+	CreateHistory(ctx context.Context, h *dto.History, busactId string, userId int) error
 }
 
 type HistoryService struct {
@@ -23,6 +23,6 @@ func (i *HistoryService) GetHistory(historyId int) (*ent.History, error) {
 	return i.postgres.GetHistory(context.Background(), historyId)
 }
 
-func (i *HistoryService) CreateHistory(h *dto.History, busactId *int, id int) error {
+func (i *HistoryService) CreateHistory(h *dto.History, busactId string, id int) error {
 	return i.postgres.CreateHistory(context.Background(), h, busactId, id)
 }

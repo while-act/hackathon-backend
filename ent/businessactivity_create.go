@@ -20,21 +20,15 @@ type BusinessActivityCreate struct {
 	hooks    []Hook
 }
 
-// SetType sets the "type" field.
-func (bac *BusinessActivityCreate) SetType(s string) *BusinessActivityCreate {
-	bac.mutation.SetType(s)
-	return bac
-}
-
-// SetSubType sets the "sub_type" field.
-func (bac *BusinessActivityCreate) SetSubType(s string) *BusinessActivityCreate {
-	bac.mutation.SetSubType(s)
-	return bac
-}
-
 // SetTotal sets the "total" field.
 func (bac *BusinessActivityCreate) SetTotal(f float64) *BusinessActivityCreate {
 	bac.mutation.SetTotal(f)
+	return bac
+}
+
+// SetID sets the "id" field.
+func (bac *BusinessActivityCreate) SetID(s string) *BusinessActivityCreate {
+	bac.mutation.SetID(s)
 	return bac
 }
 
@@ -87,12 +81,6 @@ func (bac *BusinessActivityCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (bac *BusinessActivityCreate) check() error {
-	if _, ok := bac.mutation.GetType(); !ok {
-		return &ValidationError{Name: "type", err: errors.New(`ent: missing required field "BusinessActivity.type"`)}
-	}
-	if _, ok := bac.mutation.SubType(); !ok {
-		return &ValidationError{Name: "sub_type", err: errors.New(`ent: missing required field "BusinessActivity.sub_type"`)}
-	}
 	if _, ok := bac.mutation.Total(); !ok {
 		return &ValidationError{Name: "total", err: errors.New(`ent: missing required field "BusinessActivity.total"`)}
 	}
@@ -115,8 +103,13 @@ func (bac *BusinessActivityCreate) sqlSave(ctx context.Context) (*BusinessActivi
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != nil {
+		if id, ok := _spec.ID.Value.(string); ok {
+			_node.ID = id
+		} else {
+			return nil, fmt.Errorf("unexpected BusinessActivity.ID type: %T", _spec.ID.Value)
+		}
+	}
 	bac.mutation.id = &_node.ID
 	bac.mutation.done = true
 	return _node, nil
@@ -125,15 +118,11 @@ func (bac *BusinessActivityCreate) sqlSave(ctx context.Context) (*BusinessActivi
 func (bac *BusinessActivityCreate) createSpec() (*BusinessActivity, *sqlgraph.CreateSpec) {
 	var (
 		_node = &BusinessActivity{config: bac.config}
-		_spec = sqlgraph.NewCreateSpec(businessactivity.Table, sqlgraph.NewFieldSpec(businessactivity.FieldID, field.TypeInt))
+		_spec = sqlgraph.NewCreateSpec(businessactivity.Table, sqlgraph.NewFieldSpec(businessactivity.FieldID, field.TypeString))
 	)
-	if value, ok := bac.mutation.GetType(); ok {
-		_spec.SetField(businessactivity.FieldType, field.TypeString, value)
-		_node.Type = value
-	}
-	if value, ok := bac.mutation.SubType(); ok {
-		_spec.SetField(businessactivity.FieldSubType, field.TypeString, value)
-		_node.SubType = value
+	if id, ok := bac.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
 	}
 	if value, ok := bac.mutation.Total(); ok {
 		_spec.SetField(businessactivity.FieldTotal, field.TypeFloat64, value)
@@ -198,10 +187,6 @@ func (bacb *BusinessActivityCreateBulk) Save(ctx context.Context) ([]*BusinessAc
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
-					id := specs[i].ID.Value.(int64)
-					nodes[i].ID = int(id)
-				}
 				mutation.done = true
 				return nodes[i], nil
 			})

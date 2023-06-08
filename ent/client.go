@@ -292,7 +292,7 @@ func (c *BusinessActivityClient) UpdateOne(ba *BusinessActivity) *BusinessActivi
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *BusinessActivityClient) UpdateOneID(id int) *BusinessActivityUpdateOne {
+func (c *BusinessActivityClient) UpdateOneID(id string) *BusinessActivityUpdateOne {
 	mutation := newBusinessActivityMutation(c.config, OpUpdateOne, withBusinessActivityID(id))
 	return &BusinessActivityUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -309,7 +309,7 @@ func (c *BusinessActivityClient) DeleteOne(ba *BusinessActivity) *BusinessActivi
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *BusinessActivityClient) DeleteOneID(id int) *BusinessActivityDeleteOne {
+func (c *BusinessActivityClient) DeleteOneID(id string) *BusinessActivityDeleteOne {
 	builder := c.Delete().Where(businessactivity.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -326,12 +326,12 @@ func (c *BusinessActivityClient) Query() *BusinessActivityQuery {
 }
 
 // Get returns a BusinessActivity entity by its id.
-func (c *BusinessActivityClient) Get(ctx context.Context, id int) (*BusinessActivity, error) {
+func (c *BusinessActivityClient) Get(ctx context.Context, id string) (*BusinessActivity, error) {
 	return c.Query().Where(businessactivity.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *BusinessActivityClient) GetX(ctx context.Context, id int) *BusinessActivity {
+func (c *BusinessActivityClient) GetX(ctx context.Context, id string) *BusinessActivity {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)

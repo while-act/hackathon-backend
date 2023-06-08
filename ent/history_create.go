@@ -131,16 +131,16 @@ func (hc *HistoryCreate) SetPatentCalc(b bool) *HistoryCreate {
 	return hc
 }
 
-// SetBusinessActivityID sets the "business_activity_id" field.
-func (hc *HistoryCreate) SetBusinessActivityID(i int) *HistoryCreate {
-	hc.mutation.SetBusinessActivityID(i)
+// SetBusinessActivityType sets the "business_activity_type" field.
+func (hc *HistoryCreate) SetBusinessActivityType(s string) *HistoryCreate {
+	hc.mutation.SetBusinessActivityType(s)
 	return hc
 }
 
-// SetNillableBusinessActivityID sets the "business_activity_id" field if the given value is not nil.
-func (hc *HistoryCreate) SetNillableBusinessActivityID(i *int) *HistoryCreate {
-	if i != nil {
-		hc.SetBusinessActivityID(*i)
+// SetNillableBusinessActivityType sets the "business_activity_type" field if the given value is not nil.
+func (hc *HistoryCreate) SetNillableBusinessActivityType(s *string) *HistoryCreate {
+	if s != nil {
+		hc.SetBusinessActivityType(*s)
 	}
 	return hc
 }
@@ -193,6 +193,20 @@ func (hc *HistoryCreate) SetNillableTaxationSystemsID(id *int) *HistoryCreate {
 // SetTaxationSystems sets the "taxation_systems" edge to the TaxationSystem entity.
 func (hc *HistoryCreate) SetTaxationSystems(t *TaxationSystem) *HistoryCreate {
 	return hc.SetTaxationSystemsID(t.ID)
+}
+
+// SetBusinessActivityID sets the "business_activity" edge to the BusinessActivity entity by ID.
+func (hc *HistoryCreate) SetBusinessActivityID(id string) *HistoryCreate {
+	hc.mutation.SetBusinessActivityID(id)
+	return hc
+}
+
+// SetNillableBusinessActivityID sets the "business_activity" edge to the BusinessActivity entity by ID if the given value is not nil.
+func (hc *HistoryCreate) SetNillableBusinessActivityID(id *string) *HistoryCreate {
+	if id != nil {
+		hc = hc.SetBusinessActivityID(*id)
+	}
+	return hc
 }
 
 // SetBusinessActivity sets the "business_activity" edge to the BusinessActivity entity.
@@ -447,13 +461,13 @@ func (hc *HistoryCreate) createSpec() (*History, *sqlgraph.CreateSpec) {
 			Columns: []string{history.BusinessActivityColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(businessactivity.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(businessactivity.FieldID, field.TypeString),
 			},
 		}
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.BusinessActivityID = nodes[0]
+		_node.BusinessActivityType = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := hc.mutation.DistrictIDs(); len(nodes) > 0 {
