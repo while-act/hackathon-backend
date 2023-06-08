@@ -5,7 +5,9 @@
 </head>
 <body>
 
-<h1>{{ .IndustryBranch }}</h1>
+<h1>{{ .Name }}</h1>
+
+<p>{{ .IndustryBranch }}</p>
 <p>{{ .OrganizationType }}</p>
 <p>{{ .FullTimeEmployers }}</p>
 <p>{{ printf "%.2f" .LandArea }}</p>
@@ -18,6 +20,7 @@
 <p>{{ printf "%.2f" .Equipment }}</p>
 <p>{{ printf "%.2f" .Taxes }}</p>
 <p>{{ printf "%.2f" .SocialInsurance }}</p>
+<p>{{ printf "%.2f" .PatentCost }}</p>
 <p>{{ .Other }}</p>
 <p>{{ printf "%.2f" .Total }}</p>
 
