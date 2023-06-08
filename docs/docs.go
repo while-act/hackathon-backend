@@ -674,23 +674,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.BusinessActivity": {
-            "type": "object",
-            "required": [
-                "subType",
-                "type"
-            ],
-            "properties": {
-                "subType": {
-                    "type": "string",
-                    "example": "Много букав"
-                },
-                "type": {
-                    "type": "string",
-                    "example": "Много букав"
-                }
-            }
-        },
         "dto.Email": {
             "type": "object",
             "required": [
@@ -752,7 +735,8 @@ const docTemplate = `{
                     ]
                 },
                 "business_activity": {
-                    "$ref": "#/definitions/dto.BusinessActivity"
+                    "type": "string",
+                    "example": "Ремонт, чистка, окраска и пошив обуви"
                 },
                 "constructionFacilitiesArea": {
                     "type": "number",
