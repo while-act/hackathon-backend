@@ -40,12 +40,7 @@ func NewPDF(templatePath string) *PDF {
 		log.Fatal(err)
 	}
 
-	pdff.SetPath("pkg/wkhtmltopdf/wkhtmltopdf.exe")
-
-	_, err = pdff.NewPDFGenerator()
-	if err != nil {
-		log.WithErr(err).Fatal("can't find wkhtmltopdf.exe")
-	}
+	pdff.SetPath("configs/wkhtmltopdf.exe")
 
 	return &PDF{t: t}
 }
