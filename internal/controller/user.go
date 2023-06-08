@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/while-act/hackathon-backend/ent"
 	"github.com/while-act/hackathon-backend/internal/controller/dao"
 	"github.com/while-act/hackathon-backend/internal/controller/dto"
 	"github.com/while-act/hackathon-backend/pkg/middleware/errs"
@@ -154,7 +155,14 @@ func (h *Handler) getHistory(c *gin.Context, info *dao.Session) error {
 		}
 	}
 
-	err = h.pdf.GeneratePDF(c.Writer, h.pdf.CalcDB(history, dist, tax))
+	var patent float64
+	if history.PatentCalc {
+		var p *ent.BusinessActivity
+		p, _ = h.business.GetBusiness(history.BusinessActivityType)
+		patent = p.Total
+	}
+
+	err = h.pdf.GeneratePDF(c.Writer, h.pdf.CalcDB(history, dist, tax, patent))
 	if err != nil {
 		return errs.PDFError.AddErr(err)
 	}

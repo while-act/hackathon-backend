@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/while-act/hackathon-backend/ent"
 	"github.com/while-act/hackathon-backend/internal/controller/dao"
 	"github.com/while-act/hackathon-backend/internal/controller/dto"
 	"github.com/while-act/hackathon-backend/pkg/middleware/errs"
@@ -21,12 +22,12 @@ import (
 // @Router /calc/save [post]
 func (h *Handler) saveCalcData(c *gin.Context, history dto.History, info *dao.Session) error {
 
-	id, err := h.business.GetBusiness(history.BusinessActivity)
+	b, err := h.business.GetBusiness(history.BusinessActivity)
 	if err != nil {
 		return err
 	}
 
-	if err = h.history.CreateHistory(&history, id, info.ID); err != nil {
+	if err = h.history.CreateHistory(&history, b.ID, info.ID); err != nil {
 		return err
 	}
 
@@ -51,13 +52,17 @@ func (h *Handler) calcData(c *gin.Context, history dto.History) error {
 	}
 	var tax float64
 	if history.AccountingSupport {
-		tax, err = h.tax.GetTax(history.TaxationSystemOperations, history.OperationsType)
-		if err != nil {
-			return err
-		}
+		tax, _ = h.tax.GetTax(history.TaxationSystemOperations, history.OperationsType)
 	}
 
-	err = h.pdf.GeneratePDF(c.Writer, h.pdf.CalcDTO(&history, dist, tax))
+	var patent float64
+	if history.PatentCalc {
+		var p *ent.BusinessActivity
+		p, _ = h.business.GetBusiness(history.BusinessActivity)
+		patent = p.Total
+	}
+
+	err = h.pdf.GeneratePDF(c.Writer, h.pdf.CalcDTO(&history, dist, tax, patent))
 	if err != nil {
 		return errs.PDFError.AddErr(err)
 	}

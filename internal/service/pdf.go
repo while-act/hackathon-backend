@@ -29,6 +29,7 @@ type Params struct {
 	Equipment         float64
 	Taxes             float64
 	SocialInsurance   float64
+	PatentCost        float64
 	Other             string
 	Total             float64
 }
@@ -49,7 +50,7 @@ func NewPDF(templatePath string) *PDF {
 	return &PDF{t: t}
 }
 
-func (r *PDF) CalcDTO(h *dto.History, dist *ent.District, tax float64) Params {
+func (r *PDF) CalcDTO(h *dto.History, dist *ent.District, tax float64, patent float64) Params {
 	p := Params{
 		Name:              h.Name,
 		Other:             h.Other,
@@ -83,10 +84,15 @@ func (r *PDF) CalcDTO(h *dto.History, dist *ent.District, tax float64) Params {
 		p.Total += p.Taxes
 	}
 
+	if h.PatentCalc && patent != 0 {
+		p.PatentCost = patent
+		p.Total += patent
+	}
+
 	return p
 }
 
-func (r *PDF) CalcDB(h *ent.History, dist *ent.District, tax float64) Params {
+func (r *PDF) CalcDB(h *ent.History, dist *ent.District, tax float64, patent float64) Params {
 	p := Params{
 		Name:              h.Name,
 		Other:             h.Other,
@@ -118,6 +124,11 @@ func (r *PDF) CalcDB(h *ent.History, dist *ent.District, tax float64) Params {
 	if h.AccountingSupport {
 		p.Taxes = tax + (0.5 * float64(h.FullTimeEmployees))
 		p.Total += p.Taxes
+	}
+
+	if h.PatentCalc && patent != 0 {
+		p.PatentCost = patent
+		p.Total += patent
 	}
 
 	return p

@@ -54,11 +54,11 @@ type DistrictService interface {
 
 type HistoryService interface {
 	GetHistory(historyId int) (*ent.History, error)
-	CreateHistory(h *dto.History, busactId *int, id int) error
+	CreateHistory(h *dto.History, busactId string, id int) error
 }
 
 type BusinessActivityService interface {
-	GetBusiness(bus *dto.BusinessActivity) (*int, error)
+	GetBusiness(bus string) (*ent.BusinessActivity, error)
 }
 
 type TaxService interface {
@@ -66,8 +66,8 @@ type TaxService interface {
 }
 
 type PDFGenerator interface {
-	CalcDTO(h *dto.History, dist *ent.District, tax float64) service.Params
-	CalcDB(h *ent.History, dist *ent.District, tax float64) service.Params
+	CalcDTO(h *dto.History, dist *ent.District, tax float64, patent float64) service.Params
+	CalcDB(h *ent.History, dist *ent.District, tax float64, patent float64) service.Params
 	GeneratePDF(out io.Writer, data service.Params) error
 }
 
