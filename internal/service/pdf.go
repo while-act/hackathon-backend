@@ -2,6 +2,7 @@ package service
 
 import (
 	"bytes"
+	"fmt"
 	pdff "github.com/SebastiaanKlippert/go-wkhtmltopdf"
 	"github.com/while-act/hackathon-backend/ent"
 	"github.com/while-act/hackathon-backend/internal/controller/dto"
@@ -133,6 +134,7 @@ func (r *PDF) GeneratePDF(out io.Writer, data Params) error {
 
 	pdf, err := pdff.NewPDFGenerator()
 	if err != nil {
+		fmt.Println(123)
 		return err
 	}
 
@@ -145,6 +147,8 @@ func (r *PDF) GeneratePDF(out io.Writer, data Params) error {
 	pdf.SetOutput(out)
 	pdf.PageSize.Set(pdff.PageSizeA4)
 	pdf.AddPage(pdff.NewPageReader(buf))
+
+	fmt.Println(buf.String())
 
 	return pdf.Create()
 }
