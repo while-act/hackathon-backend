@@ -1,19 +1,14 @@
 version: '3.9'
 
-networks:
-  proxy:
-
 services:
   backend:
     container_name: backend
     platform: linux/amd64
-    image: wtkeqrf0/while.act-backend:main
+    image: wtkeqrf0/while-act-backend
     env_file:
       - .env
     ports:
       - "3000:3000"
-    networks:
-      - proxy
     depends_on:
       postgres:
         condition: service_healthy
@@ -29,8 +24,6 @@ services:
       POSTGRES_PASSWORD: "postgres"
     ports:
       - "5432:5432"
-    networks:
-      - proxy
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 6s
@@ -43,8 +36,6 @@ services:
     image: redis:7.0.9-alpine3.17
     ports:
       - "6379:6379"
-    networks:
-      - proxy
     healthcheck:
       test: [ "CMD", "redis-cli","ping" ]
       interval: 8s
