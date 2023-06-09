@@ -2,7 +2,6 @@ package service
 
 import (
 	"bytes"
-	"fmt"
 	pdff "github.com/SebastiaanKlippert/go-wkhtmltopdf"
 	"github.com/while-act/hackathon-backend/ent"
 	"github.com/while-act/hackathon-backend/internal/controller/dto"
@@ -12,13 +11,15 @@ import (
 )
 
 type PDF struct {
-	t *template.Template
+	t []*template.Template
 }
 
 type Params struct {
 	Name              string
 	IndustryBranch    string
 	OrganizationType  string
+	Other             string
+	DistrictTitle     string
 	FullTimeEmployers int
 	LandArea          float64
 	WageFund          float64
@@ -31,12 +32,20 @@ type Params struct {
 	Taxes             float64
 	SocialInsurance   float64
 	PatentCost        float64
-	Other             string
 	Total             float64
+	MaxTotal          float64
 }
 
 func NewPDF(templatePath string) *PDF {
-	t, err := template.ParseFiles(templatePath)
+	t1, _ := template.ParseFiles(templatePath + "template.html")
+	t2, _ := template.ParseFiles(templatePath + "template2.html")
+	t3, _ := template.ParseFiles(templatePath + "template3.html")
+	t4, _ := template.ParseFiles(templatePath + "template4.html")
+	t5, _ := template.ParseFiles(templatePath + "template5.html")
+
+	t := []*template.Template{t1, t2, t3, t4, t5}
+	t1, err := template.ParseFiles(templatePath+"template.html", templatePath+"template2.html",
+		templatePath+"template3.html", templatePath+"template4.html", templatePath+"template5.html")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -48,6 +57,7 @@ func NewPDF(templatePath string) *PDF {
 
 func (r *PDF) CalcDTO(h *dto.History, dist *ent.District, tax float64, patent float64) Params {
 	p := Params{
+		DistrictTitle:     h.DistrictTitle,
 		Name:              h.Name,
 		Other:             h.Other,
 		IndustryBranch:    h.IndustryBranch,
@@ -75,7 +85,7 @@ func (r *PDF) CalcDTO(h *dto.History, dist *ent.District, tax float64, patent fl
 		p.Equipment += v.Price
 	}
 	p.Total += p.Equipment
-	if h.AccountingSupport {
+	if h.AccountingSupport && tax != 0 {
 		p.Taxes = tax + (0.5 * float64(h.FullTimeEmployees))
 		p.Total += p.Taxes
 	}
@@ -134,21 +144,37 @@ func (r *PDF) GeneratePDF(out io.Writer, data Params) error {
 
 	pdf, err := pdff.NewPDFGenerator()
 	if err != nil {
-		fmt.Println(123)
 		return err
 	}
+
+	data.LandArea = data.LandArea / 1000
+	data.WageFund = data.WageFund / 1000
+	data.InsurancePayment = data.InsurancePayment / 1000
+	data.IncomeTax = data.IncomeTax / 1000
+	data.LandValueMin = data.LandValueMin / 1000
+	data.LandValueMax = data.LandValueMax / 1000
+	data.LandValue = data.LandValue / 1000
+	data.Equipment = data.Equipment / 1000
+	data.Taxes = data.Taxes / 1000
+	data.SocialInsurance = data.SocialInsurance / 1000
+	data.PatentCost = data.PatentCost / 1000
+	data.Total = data.Total / 1000
+	data.MaxTotal = data.Total * 1.3
+
+	pdf.PageSize.Set(pdff.PageSizeA4)
+	pdf.Dpi.Set(300)
+	pdf.SetOutput(out)
 
 	buf := new(bytes.Buffer)
-	if err = r.t.Execute(buf, data); err != nil {
-		return err
+	for _, v := range r.t {
+		if err = v.Execute(buf, data); err != nil {
+			return err
+		}
 	}
-
-	pdf.NoPdfCompression.Set(true)
-	pdf.SetOutput(out)
-	pdf.PageSize.Set(pdff.PageSizeA4)
+	page := pdff.NewPageReader(buf)
+	page.HeaderSpacing.Set(10)
+	page.Encoding.Set("UTF8")
 	pdf.AddPage(pdff.NewPageReader(buf))
-
-	fmt.Println(buf.String())
 
 	return pdf.Create()
 }
