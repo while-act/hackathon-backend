@@ -6,7 +6,7 @@
         "application/json"
     ],
     "schemes": [
-        "http"
+        "https"
     ],
     "swagger": "2.0",
     "info": {
@@ -19,6 +19,7 @@
         },
         "version": "1.0"
     },
+    "host": "hackathon.frkam.dev",
     "basePath": "/api",
     "paths": {
         "/auth/session": {
@@ -149,6 +150,9 @@
         "/calc": {
             "post": {
                 "description": "Returns PDF file, gotten from body",
+                "produces": [
+                    "application/pdf"
+                ],
                 "tags": [
                     "Calc"
                 ],
@@ -517,6 +521,9 @@
                     }
                 ],
                 "description": "Returns PDF file got from user history",
+                "produces": [
+                    "application/pdf"
+                ],
                 "tags": [
                     "User"
                 ],

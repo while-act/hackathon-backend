@@ -322,6 +322,7 @@ definitions:
         minLength: 2
         type: string
     type: object
+host: hackathon.frkam.dev
 info:
   contact:
     email: matvey-sizov@mail.ru
@@ -427,6 +428,8 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/dto.History'
+      produces:
+      - application/pdf
       responses:
         "200":
           description: PDF file
@@ -614,6 +617,8 @@ paths:
         name: history_id
         required: true
         type: string
+      produces:
+      - application/pdf
       responses:
         "200":
           description: PDF file
@@ -683,7 +688,7 @@ paths:
 produces:
 - application/json
 schemes:
-- http
+- https
 securityDefinitions:
   ApiKeyAuth:
     in: header

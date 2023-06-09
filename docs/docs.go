@@ -154,6 +154,9 @@ const docTemplate = `{
         "/calc": {
             "post": {
                 "description": "Returns PDF file, gotten from body",
+                "produces": [
+                    "application/pdf"
+                ],
                 "tags": [
                     "Calc"
                 ],
@@ -522,6 +525,9 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Returns PDF file got from user history",
+                "produces": [
+                    "application/pdf"
+                ],
                 "tags": [
                     "User"
                 ],
@@ -995,9 +1001,9 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "",
+	Host:             "hackathon.frkam.dev",
 	BasePath:         "/api",
-	Schemes:          []string{"http"},
+	Schemes:          []string{"https"},
 	Title:            "While.act API",
 	Description:      "It's an API interacting with While.act using Golang",
 	InfoInstanceName: "swagger",
