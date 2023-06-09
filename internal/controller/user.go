@@ -125,6 +125,7 @@ func (h *Handler) getHistories(c *gin.Context, info *dao.Session) error {
 // @Tags User
 // @Param history_id path string true "Unique id from history"
 // @Success 200 "PDF file"
+// @Produce application/pdf
 // @Failure 400 {object} errs.MyError "Validation error"
 // @Failure 401 {object} errs.MyError "User isn't logged in"
 // @Failure 500 {object} errs.MyError
@@ -147,19 +148,19 @@ func (h *Handler) getHistory(c *gin.Context, info *dao.Session) error {
 	if err != nil {
 		return err
 	}
+
 	var tax float64
 	if history.AccountingSupport {
-		tax, err = h.tax.GetTax(&history.TaxationSystemOperations, &history.OperationType)
-		if err != nil {
-			return err
-		}
+		tax, _ = h.tax.GetTax(&history.TaxationSystemOperations, &history.OperationType)
 	}
 
 	var patent float64
 	if history.PatentCalc {
 		var p *ent.BusinessActivity
 		p, _ = h.business.GetBusiness(history.BusinessActivityType)
-		patent = p.Total
+		if p != nil {
+			patent = p.Total
+		}
 	}
 
 	err = h.pdf.GeneratePDF(c.Writer, h.pdf.CalcDB(history, dist, tax, patent))

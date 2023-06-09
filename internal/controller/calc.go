@@ -41,6 +41,7 @@ func (h *Handler) saveCalcData(c *gin.Context, history dto.History, info *dao.Se
 // @Tags Calc
 // @Param from body dto.History true "Completed application form"
 // @Success 200 "PDF file"
+// @Produce application/pdf
 // @Failure 400 {object} errs.MyError "Validation error"
 // @Failure 500 {object} errs.MyError
 // @Router /calc [post]
@@ -50,6 +51,7 @@ func (h *Handler) calcData(c *gin.Context, history dto.History) error {
 	if err != nil {
 		return err
 	}
+
 	var tax float64
 	if history.AccountingSupport {
 		tax, _ = h.tax.GetTax(history.TaxationSystemOperations, history.OperationsType)
@@ -59,7 +61,9 @@ func (h *Handler) calcData(c *gin.Context, history dto.History) error {
 	if history.PatentCalc {
 		var p *ent.BusinessActivity
 		p, _ = h.business.GetBusiness(history.BusinessActivity)
-		patent = p.Total
+		if p != nil {
+			patent = p.Total
+		}
 	}
 
 	err = h.pdf.GeneratePDF(c.Writer, h.pdf.CalcDTO(&history, dist, tax, patent))
