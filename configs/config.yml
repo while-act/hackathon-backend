@@ -2,4 +2,4 @@ insurance:
   contribution: 22
   medical: 5
 
-template_path: "configs/template.html"
+template_path: "configs/"

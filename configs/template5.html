@@ -19,15 +19,13 @@
         max-height: 127px;
         margin-bottom: 45px;
       }
-
       .firstScreen__title {
-        font-family: 'Montserrat',serif;
+        font-family: 'Montserrat';
         font-style: normal;
         font-weight: 700;
-        font-size: 65px;
+        font-size: 55px;
         line-height: 100%;
         margin-bottom: 40px;
-        max-width: 30%;
       }
       .pointer {
         border: 5px solid #2859ff;
@@ -35,10 +33,10 @@
       }
       .firstScreen__description {
         margin-top: 40px;
-        font-family: 'Montserrat',serif;
+        font-family: 'Montserrat';
         font-style: normal;
         font-weight: 700;
-        font-size: 65px;
+        font-size: 55px;
         line-height: 100%;
         color: #000000;
         display: flex;
@@ -121,10 +119,56 @@
   </head>
   <body>
     <img class="logo" src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzgyIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDM4MiAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik02Mi41NDk5IDc0LjM5MTZDNjQuNjY4NCA2Ni40ODY1IDcyLjc5NDEgNTguMzYwOCA4MC42OTkyIDU2LjI0MjNMMTI5Ljk4MyA0My4wMzQ3QzEzNy44ODggNDAuOTE2MiAxNDIuNTc5IDQ1LjYwNzIgMTQwLjQ2MSA1My41MTIzTDEyNy4yNTMgMTAyLjc5NkMxMjUuMTM1IDExMC43MDEgMTE3LjAwOSAxMTguODI3IDEwOS4xMDQgMTIwLjk0Nkw1OS44MTk5IDEzNC4xNTNDNTEuOTE0OCAxMzYuMjcyIDQ3LjIyMzggMTMxLjU4MSA0OS4zNDIzIDEyMy42NzVMNjIuNTQ5OSA3NC4zOTE2WiIgZmlsbD0iIzI4NTlGRiIvPgo8cGF0aCBkPSJNNDIuNzkyMSA1NC42MzM4QzQ0LjkxMDYgNDYuNzI4NyA1My4wMzYzIDM4LjYwMjkgNjAuOTQxNCAzNi40ODQ1TDExMC4yMjUgMjMuMjc2OUMxMTguMTMgMjEuMTU4NCAxMjIuODIxIDI1Ljg0OTQgMTIwLjcwMyAzMy43NTQ1TDEwNy40OTUgODMuMDM4NEMxMDUuMzc3IDkwLjk0MzUgOTcuMjUxMiA5OS4wNjkyIDg5LjM0NjEgMTAxLjE4OEw0MC4wNjIxIDExNC4zOTVDMzIuMTU3IDExNi41MTQgMjcuNDY2IDExMS44MjMgMjkuNTg0NSAxMDMuOTE4TDQyLjc5MjEgNTQuNjMzOFoiIGZpbGw9IiMxNzVDRDMiLz4KPHBhdGggZD0iTTE3Mi44OTIgNTIuNTIyMVYxMjEuMDQzSDE1NC40NDRWNTIuNTIyMUgxNzIuODkyWk0xNTMuMTI2IDM3LjM2ODVDMTUzLjEyNiAzMS41NzA1IDE1Ny44NyAyNi44MjY4IDE2My42NjggMjYuODI2OEMxNjkuNDY2IDI2LjgyNjggMTc0LjIwOSAzMS41NzA1IDE3NC4yMDkgMzcuMzY4NUMxNzQuMjA5IDQzLjE2NjQgMTY5LjQ2NiA0Ny45MTAxIDE2My42NjggNDcuOTEwMUMxNTcuODcgNDcuOTEwMSAxNTMuMTI2IDQzLjE2NjQgMTUzLjEyNiAzNy4zNjg1Wk0xNzkuNTM3IDEyMS4wNDNWNTIuNTIyMUgxOTcuMzI2VjYzLjcyMjZIMTk3Ljk4NUMxOTcuOTg1IDYzLjcyMjYgMjAzLjkxNCA1MC41NDU1IDIxOS4wNjggNTAuNTQ1NUMyMzguMTc1IDUwLjU0NTUgMjQzLjQ0NiA2My4wNjM4IDI0My40NDYgNzguODc2M1YxMjEuMDQzSDIyNC45OThWODIuODI5NEMyMjQuOTk4IDcwLjk3IDIyMS43MDMgNjUuNjk5MiAyMTMuMTM4IDY1LjY5OTJDMjAzLjI1NiA2NS42OTkyIDE5Ny45ODUgNzEuNjI4OSAxOTcuOTg1IDg1LjQ2NDhWMTIxLjA0M0gxNzkuNTM3Wk0yOTAuMjQ1IDEyMS4wNDNWODIuODI5NEMyOTAuMjQ1IDcwLjk3IDI4Ny44NzMgNjUuNjk5MiAyODAuNjI2IDY1LjY5OTJDMjcyLjcxOSA2NS42OTkyIDI2OC41MDMgNzEuNjI4OSAyNjguNTAzIDg1LjQ2NDhWMTIxLjA0M0gyNTAuMDU1VjUyLjUyMjFIMjY3Ljg0NFY2My43MjI2SDI2OC41MDNDMjY4LjUwMyA2My43MjI2IDI3My4xMTUgNTAuNTQ1NSAyODYuOTUxIDUwLjU0NTVDMjk4LjAxOSA1MC41NDU1IDMwMy45NDkgNTUuODE2NCAzMDYuNTg0IDYzLjg1NDRMMzA2LjcxNiA2My43MjI2SDMwNy4zNzVDMzA3LjM3NSA2My43MjI2IDMxMy4zMDUgNTAuNTQ1NSAzMjcuMTQxIDUwLjU0NTVDMzQ0LjI3MSA1MC41NDU1IDM0OC44ODMgNjMuMDYzOCAzNDguODgzIDc4Ljg3NjNWMTIxLjA0M0gzMzAuNDM1VjgyLjgyOTRDMzMwLjQzNSA3MC45NyAzMjguMDYzIDY1LjY5OTIgMzIwLjgxNiA2NS42OTkyQzMxMi45MDkgNjUuNjk5MiAzMDguNjkzIDcxLjYyODkgMzA4LjY5MyA4NS40NjQ4VjEyMS4wNDNIMjkwLjI0NVoiIGZpbGw9IiMyMDIwMjAiLz4KPC9zdmc+Cg==' />
-    <h1 class="firstScreen__title">инвестируйте в будущее столицы</h1>
+    <div class="firstScreen__title">Предварительные расходы</div>
     <div class="pointer"></div>
-    <h2 class="firstScreen__description">
-      Отчет о возможных затратах на запуск промышленного производства в городе Москва
-    </h2>
+    <div class="firstScreen__description">Персонал организации</div>
+
+   <div class="spanWrapper">
+    <span class="title">
+      Москва является лидирующим регионом Российской
+Федерации с наибольшим количеством экономически
+активного населения. Уровень безработицы в столице – один из самых низких по стране и составляет менее 1%.
+    </span>
+
+    <span>
+
+     Специалисты многих направлений заняты в самых
+      разных областях деятельности: автомобилестроение,
+      пищевая промышленность, приборостроение,
+      станкоинструментальная промышленность, легкая
+      промышленность и другие.
+
+    </span>
+    <span>
+      Правительство Москвы способствует развитию новых
+      специальностей и компетенций. Благодаря проекту
+      «Московская техническая школа» Вы можете подать
+      заявку на обучение своих сотрудников необходимым
+      профессиональным навыкам.
+    </span>
+   </div>
+    </div>
+    <div class="container">
+      <div class="wrapperImage">
+        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODEiIGhlaWdodD0iODIiIHZpZXdCb3g9IjAgMCA4MSA4MiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTcuNTAzOTEgNjMuNTE3MkMyNS4yOTk0IDYzLjUwMjcgNDMuMDE3NCA2NS44NTkyIDYwLjE5MDUgNzAuNTI0NUM2Mi42MTUyIDcxLjE4NDkgNjUuMDM2NiA2OS4zODM5IDY1LjAzNjYgNjYuODY5MVY2My41MTcyTTEyLjUwNjcgMTUuOTkwMlYxOC40OTE3QzEyLjUwNjcgMTkuMTU1MSAxMi4yNDMyIDE5Ljc5MTMgMTEuNzc0MSAyMC4yNjA0QzExLjMwNSAyMC43Mjk1IDEwLjY2ODcgMjAuOTkzMSAxMC4wMDUzIDIwLjk5MzFINy41MDM5MU03LjUwMzkxIDIwLjk5MzFWMTkuNzQyNEM3LjUwMzkxIDE3LjY3MTIgOS4xODQ4NiAxNS45OTAyIDExLjI1NiAxNS45OTAySDY3LjUzOE03LjUwMzkxIDIwLjk5MzFWNTEuMDEwMU02Ny41MzggMTUuOTkwMlYxOC40OTE3QzY3LjUzOCAxOS44NzI0IDY4LjY1ODYgMjAuOTkzMSA3MC4wMzk0IDIwLjk5MzFINzIuNTQwOE02Ny41MzggMTUuOTkwMkg2OC43ODg3QzcwLjg1OTkgMTUuOTkwMiA3Mi41NDA4IDE3LjY3MTIgNzIuNTQwOCAxOS43NDI0VjUyLjI2MDhDNzIuNTQwOCA1NC4zMzIgNzAuODU5OSA1Ni4wMTMgNjguNzg4NyA1Ni4wMTNINjcuNTM4TTcuNTAzOTEgNTEuMDEwMVY1Mi4yNjA4QzcuNTAzOTEgNTMuMjU2IDcuODk5MjIgNTQuMjEwMyA4LjYwMjg4IDU0LjkxNEM5LjMwNjU0IDU1LjYxNzcgMTAuMjYwOSA1Ni4wMTMgMTEuMjU2IDU2LjAxM0gxMi41MDY3TTcuNTAzOTEgNTEuMDEwMUgxMC4wMDUzQzEwLjY2ODcgNTEuMDEwMSAxMS4zMDUgNTEuMjczNyAxMS43NzQxIDUxLjc0MjhDMTIuMjQzMiA1Mi4yMTE5IDEyLjUwNjcgNTIuODQ4MSAxMi41MDY3IDUzLjUxMTVWNTYuMDEzTTY3LjUzOCA1Ni4wMTNWNTMuNTExNUM2Ny41MzggNTIuODQ4MSA2Ny44MDE1IDUyLjIxMTkgNjguMjcwNiA1MS43NDI4QzY4LjczOTggNTEuMjczNyA2OS4zNzYgNTEuMDEwMSA3MC4wMzk0IDUxLjAxMDFINzIuNTQwOE02Ny41MzggNTYuMDEzSDEyLjUwNjdNNTAuMDI4MSAzNi4wMDE2QzUwLjAyODEgMzguNjU1MyA0OC45NzM5IDQxLjIwMDMgNDcuMDk3NSA0My4wNzY3QzQ1LjIyMSA0NC45NTMxIDQyLjY3NiA0Ni4wMDczIDQwLjAyMjQgNDYuMDA3M0MzNy4zNjg3IDQ2LjAwNzMgMzQuODIzNyA0NC45NTMxIDMyLjk0NzMgNDMuMDc2N0MzMS4wNzA5IDQxLjIwMDMgMzAuMDE2NyAzOC42NTUzIDMwLjAxNjcgMzYuMDAxNkMzMC4wMTY3IDMzLjM0NzkgMzEuMDcwOSAzMC44MDI5IDMyLjk0NzMgMjguOTI2NUMzNC44MjM3IDI3LjA1MDEgMzcuMzY4NyAyNS45OTU5IDQwLjAyMjQgMjUuOTk1OUM0Mi42NzYgMjUuOTk1OSA0NS4yMjEgMjcuMDUwMSA0Ny4wOTc1IDI4LjkyNjVDNDguOTczOSAzMC44MDI5IDUwLjAyODEgMzMuMzQ3OSA1MC4wMjgxIDM2LjAwMTZaTTYwLjAzMzcgMzYuMDAxNkg2MC4wNjA0VjM2LjAyODNINjAuMDMzN1YzNi4wMDE2Wk0yMC4wMTEgMzYuMDAxNkgyMC4wMzc3VjM2LjAyODNIMjAuMDExVjM2LjAwMTZaIiBzdHJva2U9IiMyODU5RkYiIHN0cm9rZS13aWR0aD0iNS4wMDI4NCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+Cjwvc3ZnPgo=' />
+        <div class="containerImageDescription">Итого возможных расходов на содержание персонала организации</div>
+      </div>
+      <div class="containerDescription">{{ printf "%0.2f" .Total }} тыс. руб.</div>
+      <div class="wrapperImage">
+        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODMiIGhlaWdodD0iODMiIHZpZXdCb3g9IjAgMCA4MyA4MyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzk0M183NzY1NikiPgo8cGF0aCBkPSJNNTUuMjc4MiA3Mi41NTQ5VjY1LjY0NTJDNTUuMjc4MiA2MS45OCA1My44MjIyIDU4LjQ2NSA1MS4yMzA2IDU1Ljg3MzNDNDguNjM4OSA1My4yODE3IDQ1LjEyMzkgNTEuODI1NyA0MS40NTg3IDUxLjgyNTdIMTcuMjc0NkMxMy42MDk0IDUxLjgyNTcgMTAuMDk0NCA1My4yODE3IDcuNTAyNzIgNTUuODczM0M0LjkxMTA2IDU4LjQ2NSAzLjQ1NTA4IDYxLjk4IDMuNDU1MDggNjUuNjQ1MlY3Mi41NTQ5TTY5LjA5NzcgMjcuNjQxNlY0OC4zNzA4TTc5LjQ2MjMgMzguMDA2Mkg1OC43MzMxTTQzLjE4NjEgMjQuMTg2N0M0My4xODYxIDMxLjgxOSAzNi45OTg5IDM4LjAwNjIgMjkuMzY2NiAzOC4wMDYyQzIxLjczNDMgMzguMDA2MiAxNS41NDcxIDMxLjgxOSAxNS41NDcxIDI0LjE4NjdDMTUuNTQ3MSAxNi41NTQ0IDIxLjczNDMgMTAuMzY3MiAyOS4zNjY2IDEwLjM2NzJDMzYuOTk4OSAxMC4zNjcyIDQzLjE4NjEgMTYuNTU0NCA0My4xODYxIDI0LjE4NjdaIiBzdHJva2U9IiMyODU5RkYiIHN0cm9rZS13aWR0aD0iNi45MDk3NSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjwvZz4KPGRlZnM+CjxjbGlwUGF0aCBpZD0iY2xpcDBfOTQzXzc3NjU2Ij4KPHJlY3Qgd2lkdGg9IjgyLjkxNyIgaGVpZ2h0PSI4Mi45MTciIGZpbGw9IndoaXRlIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwIDAuMDAxOTUzMTIpIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg==' />
+        <div class="containerImageDescription">Планируемая численность персонала</div>
+      </div>
+      <div class="containerDescription">{{ .FullTimeEmployers }} человек</div>
+      <div class="wrapperImage">
+        <img src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNzkiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA3OSA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTQ2LjY2MTEgMTQuODE2OEM0Ni42NjQ3IDEwLjc3NTQgMzguNDIzOCA3LjUwMTk1IDI4LjI2OTkgNy41MDE5NUMxOC4xMTU5IDcuNTAxOTUgOS44ODIzNiAxMC43NzkgOS44NzUgMTQuODE2OE05Ljg3NSAxNC44MTY4QzkuODc1IDE4Ljg1ODMgMTguMTA4NSAyMi4xMzE3IDI4LjI2OTkgMjIuMTMxN0MzOC40MzEyIDIyLjEzMTcgNDYuNjY0NyAxOC44NTgzIDQ2LjY2NDcgMTQuODE2OEw0Ni42NjQ4IDQzLjE5ODRNOS44NzUgMTQuODE2OFY1OC43MDU5QzkuODc4NjggNjIuNzQ3NCAxOC4xMTIyIDY2LjAyMDggMjguMjY5OSA2Ni4wMjA4QzMzLjE5NiA2Ni4wMjA4IDM3LjY0MzkgNjUuMjQxOCA0MC45NDQgNjMuOTg3M005Ljg3ODY4IDI5LjQ0NjZDOS44Nzg2OCAzMy40ODggMTguMTEyMiAzNi43NjE1IDI4LjI3MzYgMzYuNzYxNUMzOC40MzQ5IDM2Ljc2MTUgNDYuNjY4NSAzMy40ODggNDYuNjY4NSAyOS40NDY2TTQxLjE2NDcgNDkuMjg4NEMzNy44NDYzIDUwLjU4NjggMzMuMjk1NCA1MS4zOTE1IDI4LjI2OTkgNTEuMzkxNUMxOC4xMTIyIDUxLjM5MTUgOS44Nzg2OCA0OC4xMTggOS44Nzg2OCA0NC4wNzY1TTY3LjU2ODcgNDUuMjM5N0M3NC4wMzI3IDUxLjY2NTggNzQuMDMyNyA2Mi4wODk2IDY3LjU2ODcgNjguNTE1N0M2MS4xMDQ3IDc0Ljk0MTggNTAuNjE5NyA3NC45NDE4IDQ0LjE1NTcgNjguNTE1N0MzNy42OTE3IDYyLjA4OTYgMzcuNjkxNyA1MS42NjU4IDQ0LjE1NTcgNDUuMjM5N0M1MC42MTk3IDM4LjgxMzYgNjEuMTA0NyAzOC44MTM2IDY3LjU2ODcgNDUuMjM5N1oiIHN0cm9rZT0iIzI4NTlGRiIgc3Ryb2tlLXdpZHRoPSI2LjU4MzMzIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==' />
+        <div class="containerImageDescription">Социальное страхование</div>
+      </div>
+      <div class="containerDescription">{{ printf "%0.2f" .SocialInsurance }} тыс. руб.</div>
+      </div>
+    <div class="footer">
+      *Указанные значения возможных издержек на создание промышленного производства в городе Москве носят
+      рекомендательный характер и не являются официальной позицией Правительства Москвы. За более подробным расчетом
+      необходимо обратиться в Департамент инвестиционной и промышленной политики города Москвы.
+    </div>
   </body>
 </html>
