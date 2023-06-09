@@ -33,7 +33,8 @@ import (
 // @description It's an API interacting with While.act using Golang
 // @accept application/json
 // @produce application/json
-// @schemes http
+// @schemes https
+// @host hackathon.frkam.dev
 // @BasePath /api
 
 // @contact.name Contact us
